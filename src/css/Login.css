@@ -1,0 +1,45 @@
+.wrapper {
+    display: grid;
+    grid-template-rows: 100px auto;
+  
+    grid-template-areas: 
+    "h"
+    "f";
+  }
+
+  .header{
+    grid-area: h;
+    
+  }
+
+  .form{
+    grid-area: f;
+    display: flex;
+    justify-self: center;
+  }
+
+  .login_form{
+    border: 1px solid #ec4c2c;
+    border-radius:10% 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 100px;
+    margin-bottom: 50px;
+    padding:30px;
+  }
+  
+  .form-input {
+    width: 300px;
+  }
+
+
+  .login_btn {
+    margin:20px;
+    background-color: #ec4c2c;
+  }
+  
+  .icon{
+    margin-bottom: 20px;
+  }

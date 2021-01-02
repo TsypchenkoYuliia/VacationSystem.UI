@@ -1,0 +1,23 @@
+
+  img{
+      margin-top:30px;
+      width: 150px;
+      height: 50px;
+      margin-left: 50px;
+  }
+
+  .palm{
+      margin-left: -10px;
+  }
+
+  .avatar{
+    float: right;
+    margin-right:50px;
+    margin-top:10px;
+    margin-bottom:10px;
+    
+  }
+
+  .avatar_color{
+    background-color: #ec4c2c;
+  }
