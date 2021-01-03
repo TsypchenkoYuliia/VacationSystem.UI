@@ -27,7 +27,7 @@ function Login() {
             localStorage.setItem('lastname', data.lastname);
   
 
-            {data.role === 'Admin' ? history.push('/admin') : history.push('/requests')}
+            {data.role === 'Admin' ? history.push('/admin') : history.push('/home')}
             
           })
           .catch(

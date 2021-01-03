@@ -1,3 +1,4 @@
+import { useEffect, useState} from 'react';
 import Navbar from '../components/Navbar';
 import './../css/NewRequest.css';
 import React from 'react';
@@ -10,29 +11,54 @@ import Input from '@material-ui/core/Input';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import Button  from '@material-ui/core/Button';
+import { useHistory } from 'react-router-dom';
+import {getUserById} from '../axios';
+import {getAllManagers} from '../axios';
+import {postNewRequest} from '../axios';
+import moment from 'moment';
 
-const top100Films = [
+
+const vacation = [
     { title: 'Administrative' },
     { title: 'Annual' },
     { title: 'Study' },
-    { title: 'Sick' }]
-
-const names = [
-  'Oliver Hansen',
-  'Van Henry',
-  'April Tucker',
-  'Ralph Hubbard',
-  'Omar Alexander',
-  'Carlos Abbott',
-  'Miriam Wagner',
-  'Bradley Wilkerson',
-  'Virginia Andrews',
-  'Kelly Snyder',
-];
-
-
+    { title: 'Sick' }];
+       
 function NewRequest(){
 
+  let history = useHistory();
+
+  let [data, setData] = useState([]);
+  let [dataId, setDataId] = useState([]);
+  let [reviwersId, setReviwersId] = useState([]);
+  let [type, setType] = useState("");
+  let [start, setStart] = useState("");
+  let [end, setEnd] = useState("");
+  let [comment, setComment] = useState("");
+
+    getUserById(localStorage.getItem('userId'))
+    .then((response) => {
+        {response === null? history.replace('/login'): history.replace('/newrequest')}
+    }).catch(error=>{
+        history.replace('/login');
+    });
+
+    useEffect(() => {
+      async function getAllData() {
+        await getAllManagers().then(({ data }) => {
+            setDataId(data);
+            let arr = data;
+            let reviewers = arr.map((item) => {
+            return item.firstName.concat(' ', item.lastName);
+          });
+            setData(reviewers);
+        });
+      }
+      getAllData();
+    }, []);
+
+    
+      
   const useStyles = makeStyles((theme) => ({
     formControl: {
       margin: theme.spacing(1),
@@ -66,6 +92,22 @@ function NewRequest(){
     setPersonName(event.target.value);
   };
 
+  const autocompleteChange = (event) => {
+    setType(event.target.innerText)
+  };
+
+  const endDateChange = (event) => {
+    setEnd(event.target.value)
+  };
+
+  const startDateChange = (event) => {
+    setStart(event.target.value)
+  };
+
+  const commentChange = (event) => {
+    setComment(event.target.value)
+  };
+
   function getStyles(name, personName, theme) {
     return {
       fontWeight:
@@ -74,61 +116,65 @@ function NewRequest(){
           : theme.typography.fontWeightMedium,
     };
   }
-
-  const handleChangeMultiple = (event) => {
-    const { options } = event.target;
-    const value = [];
-    for (let i = 0, l = options.length; i < l; i += 1) {
-      if (options[i].selected) {
-        value.push(options[i].value);
-      }
-    }
-    setPersonName(value);
-  };
   
     const classes = useStyles();
     const theme = useTheme()
     const [personName, setPersonName] = React.useState([]);
 
-
     const sendRequest = ()=>{
 
+      let ids = [];
+      ids.push('498f801b-3af8-4795-a6cc-69a25588c8cb');
 
+      personName.map((item)=>{
+        dataId.map((user) =>{
+          if(user.firstName.concat(' ', user.lastName) === item)
+          {ids.push(user.id)}
+        });
+      });
+
+      setReviwersId(ids);
+
+      if(type === 'Administrative')
+        type = 1
+      else if(type === 'Annual')
+        type = 2
+      else if(type === 'Study')
+        type = 3
+      else if(type === 'Sick')
+        type = 4
+
+      postNewRequest({
+        leaveType:type,
+        startDate: moment(start._d).format('YYYY-MM-DD').toString(),
+        endDate: moment(end._d).format('YYYY-MM-DD').toString(),
+        reviewsId: ids,
+        comment:comment,
+        userId: localStorage.getItem('userId'),
+      });
     };
 
     return <div className='content'><Navbar></Navbar><div className='add-request'><div className='card'>
-        <Autocomplete
-            id="combo-box-demo"
-            options={top100Films}
+        <Autocomplete id="combo-box-demo" onChange={autocompleteChange}
+            options={vacation}
             getOptionLabel={(option) => option.title}
             style={{ width: 350, margin:'15px', height:'30px'}}
             renderInput={(params) => <TextField {...params} label="Vacation type" variant="outlined" />}/>
-<div className='dates'>
-      <TextField
-        id="date"
-        className='date'
-        label="Start date"
-        type="date"
-        defaultValue="2021-01-01"
+        <div className='dates'>
+          <TextField id="date" className='date' label="Start date" type="date"
+        defaultValue="2021-01-01" onChange={startDateChange}
         style={{margin:'15px', color:'#ec4c2c'}}
-        InputLabelProps={{
-          shrink: true,
-        }}/>
-      <TextField
-        id="date"
-        className='date'
-        label="End date"
-        type="date"
-        defaultValue="2021-01-01"
+        InputLabelProps={{shrink: true,}}/>
+          <TextField id="date" className='date' label="End date" type="date"
+        defaultValue="2021-01-01" onChange={endDateChange}
         style={{margin:'15px'}}
-        InputLabelProps={{
-          shrink: true,
-        }}/>
-</div>
-      <TextField id="standard-basic" label="Comment" />  
+        InputLabelProps={{shrink: true,}}/>
+        </div>
 
-      <InputLabel id="demo-mutiple-checkbox-label">Reviewers:</InputLabel>
-        <Select
+          <TextField id="standard-basic" label="Comment" onChange={commentChange}/>  
+
+          <InputLabel id="demo-mutiple-checkbox-label">Reviewers:</InputLabel>
+          <Select
           style={{margin:'15px', height:'40px', wight:'400px'}}
           labelId="demo-mutiple-chip-label"
           id="demo-mutiple-chip"
@@ -144,20 +190,21 @@ function NewRequest(){
             </div>
           )}
           MenuProps={MenuProps}>
-          {names.map((name) => (
+          {data.map((name) => (
             <MenuItem key={name} value={name} style={getStyles(name, personName, theme)}>
               {name}
             </MenuItem>
           ))}
-        </Select>
-        <Button 
+          </Select>
+          <Button 
             variant="contained" 
             color="orange" 
             style={{margin:'15px', height:'40px', wight:'40px', color:'#E7DFDD', background:'#ec4c2c'}}
             className='login_btn'
             onClick={sendRequest}>
-                Send</Button>
-        </div></div></div>;;
+            Send
+          </Button>
+        </div></div></div>;
 }
 
 export default NewRequest;
