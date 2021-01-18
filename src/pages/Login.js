@@ -5,6 +5,8 @@ import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import './../css/Login.css';
 import PersonIcon from '@material-ui/icons/Person';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Login() {
 
@@ -25,21 +27,21 @@ function Login() {
             localStorage.setItem('role', data.role);
             localStorage.setItem('firstname', data.firstname);
             localStorage.setItem('lastname', data.lastname);
-  
-
-            {data.role === 'Admin' ? history.push('/admin') : history.push('/home')}
-            
+            {data.role === 'Admin' ? history.push('/admin') : history.push('/home')}           
           })
           .catch(
             error => {
-              console.log(error);
+              toast.error(error.message, {
+                position: toast.POSITION.BOTTOM_CENTER
+              });
             }
             );
       };
 
     return (<div className='form'>
         <form noValidate autoComplete="off" className="login_form">
-            <PersonIcon fontSize='large' className='icon' color='primary'>               
+            <PersonIcon 
+            className='icon' color='#188a05'>               
             </PersonIcon>
             <TextField 
             label="Login" 
@@ -49,6 +51,7 @@ function Login() {
             onChange={(e) => setUsername(e.target.value)}/>   
             <br></br>
             <TextField 
+            type="password"
             label="Password" 
             variant="outlined"
             className='form-input'

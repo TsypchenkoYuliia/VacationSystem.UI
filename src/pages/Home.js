@@ -10,12 +10,7 @@ function Home() {
 
     let history = useHistory();
 
-    getUserById(localStorage.getItem('userId'))
-    .then((response) => {
-        {response === null? history.replace('/login'): history.replace('/home')}
-    }).catch(error=>{
-        history.replace('/login');
-    });
+    {localStorage.getItem('role') === "Accountant" ? history.replace('/reviews'): history.replace('/home')}
 
     return <div className='content'><Navbar></Navbar><div>Statistic:</div></div>;
 }

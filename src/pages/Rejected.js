@@ -1,17 +1,16 @@
 import Navbar from '../components/Navbar';
-import Table from '../components/ReviewsTable';
+import RejectedReviewsTable from '../components/RejectedReviewsTable';
 import React, { useState } from 'react';
 
 
-
-function Reviews(){
-    const [name, setName] = useState('review');
+function Rejected(){
+    const [name, setName] = useState('rejected');
     return <div className='content'>
             <Navbar></Navbar>
             <div>
-                <Table name={name}/>        
+            <RejectedReviewsTable/>     
             </div>
         </div>;
 }
 
-export default Reviews;
+export default Rejected;

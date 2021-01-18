@@ -4,6 +4,9 @@ import Login from './pages/Login';
 import Home from './pages/Home';
 import Requests from './pages/Requests';
 import Reviews from './pages/Reviews';
+import Approved from './pages/Approved';
+import Rejected from './pages/Rejected';
+import View from './pages/View';
 import NewRequest from './pages/NewRequest';
 import Header from './components/Header';
 
@@ -31,6 +34,15 @@ function App() {
             </Route>
             <Route path="/reviews" exact>
               <Reviews />
+            </Route>
+            <Route path="/approved" exact>
+              <Approved />
+            </Route>
+            <Route path="/rejected" exact>
+              <Rejected />
+            </Route>
+            <Route path="/view" exact>
+              <View />
             </Route>
             <Route path="/home" exact>
               <Home />

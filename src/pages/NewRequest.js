@@ -16,7 +16,10 @@ import {getUserById} from '../axios';
 import {getAllManagers} from '../axios';
 import {postNewRequest} from '../axios';
 import moment from 'moment';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
+toast.configure();
 
 const vacation = [
     { title: 'Administrative' },
@@ -35,13 +38,8 @@ function NewRequest(){
   let [start, setStart] = useState("");
   let [end, setEnd] = useState("");
   let [comment, setComment] = useState("");
-
-    getUserById(localStorage.getItem('userId'))
-    .then((response) => {
-        {response === null? history.replace('/login'): history.replace('/newrequest')}
-    }).catch(error=>{
-        history.replace('/login');
-    });
+ 
+  
 
     useEffect(() => {
       async function getAllData() {
@@ -56,8 +54,6 @@ function NewRequest(){
       }
       getAllData();
     }, []);
-
-    
       
   const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -144,15 +140,57 @@ function NewRequest(){
       else if(type === 'Sick')
         type = 4
 
+        if(type === null || comment === ""){
+          toast.warn("Type is empty!", {
+            position: toast.POSITION.TOP_CENTER
+            });
+          return;
+          }
+
+        if(comment === null || comment === ""){
+        toast.warn("Comment is empty!", {
+          position: toast.POSITION.TOP_CENTER
+          });
+        return;
+        }
+
+        if(ids.length <= 1){
+          toast.warn("There must be at least one reviewer!", {
+            position: toast.POSITION.TOP_CENTER
+            });
+          return;
+        }
+
+        if(start > end){
+          toast.warn("Start date is later than end date!", {
+            position: toast.POSITION.TOP_CENTER
+            });
+          return;
+        }
+       
+
       postNewRequest({
         leaveType:type,
-        startDate: moment(start._d).format('YYYY-MM-DD').toString(),
-        endDate: moment(end._d).format('YYYY-MM-DD').toString(),
+        startDate: moment(start).format('YYYY-MM-DD').toString(),
+        endDate: moment(end).format('YYYY-MM-DD').toString(),
         reviewsId: ids,
         comment:comment,
         userId: localStorage.getItem('userId'),
-      });
+      }).then(({ data }) => {
+        toast.success("Request created", {
+          position: toast.POSITION.BOTTOM_CENTER
+        }); 
+  
+      })
+      .catch((err) => { 
+        toast.error(err.message, {
+          position: toast.POSITION.BOTTOM_CENTER
+        });                
+      }
+      );      
     };
+
+    
 
     return <div className='content'><Navbar></Navbar><div className='add-request'><div className='card'>
         <Autocomplete id="combo-box-demo" onChange={autocompleteChange}
@@ -174,6 +212,8 @@ function NewRequest(){
           <TextField id="standard-basic" label="Comment" onChange={commentChange}/>  
 
           <InputLabel id="demo-mutiple-checkbox-label">Reviewers:</InputLabel>
+          <InputLabel id="demo-mutiple-checkbox-label">1. Accounting department</InputLabel>
+          <InputLabel id="demo-mutiple-checkbox-label">Managers:</InputLabel>
           <Select
           style={{margin:'15px', height:'40px', wight:'400px'}}
           labelId="demo-mutiple-chip-label"

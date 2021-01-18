@@ -28,3 +28,30 @@ export const postNewRequest = (newRequest) => {
     });
   };
 
+  export const getMyReviews = () => {
+    return axiosApi.get(`user/reviews`);
+  };
+
+  export const getMyRequests = () => {
+    return axiosApi.get(`user/requests`);
+  };
+
+  export const getRequest = (id) => {
+    return axiosApi.get(`user/request/${id}`);
+  };
+
+  export const getMyRejectedReviews = () => {
+    return axiosApi.get(`user/reviews?stateId=4`);
+  };
+
+  export const getMyApprovedReviews = () => {
+    return axiosApi.get(`user/reviews?stateId=3`);
+  };
+
+  export const actionReview = (review) => {
+    return axiosApi.put(`user/reviews/${review.id}`, review);
+  };
+
+  export const updateRequest = (id, request) => {
+    return axiosApi.put(`requests/${id}`, request);
+  };

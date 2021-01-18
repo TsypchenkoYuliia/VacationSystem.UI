@@ -1,0 +1,10 @@
+
+
+.MuiTableCell-body{
+    background-color: #E7DFDD;
+}
+
+tr, th, td{
+    text-align:center ;
+    align-items: center;
+}
