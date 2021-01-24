@@ -13,3 +13,8 @@ tr, th, td{
     display:flex;
     flex-direction:row;
 }
+
+.commentContainer{
+    display:flex;
+    flex-direction:column;
+}

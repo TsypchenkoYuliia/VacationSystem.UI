@@ -116,12 +116,23 @@ function NewRequest() {
 
     const sendRequest = () => {
 
-        // if(type === null || comment === ""){
-        //toast.warn("Type is empty!", {
-        //position: toast.POSITION.TOP_CENTER
-        //});
-        //return;
-        //}
+        let emailRegex = RegExp(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/);
+        let phoneRegex = RegExp(/\+38\(\d{3}\)\d{3}-\d{2}-\d{2}/);
+
+        if(!email.match(emailRegex))
+        {
+            toast.error("Email invalid!", {
+                position: toast.POSITION.TOP_CENTER});
+            return;
+        }
+
+        if(!phone.match(phoneRegex))
+        {
+            toast.error("Phone invalid!", {
+                position: toast.POSITION.TOP_CENTER});
+            return;
+        }
+         
 
         postNewUser({
             firstName: firstName,
@@ -134,6 +145,7 @@ function NewRequest() {
             toast.success("User created", {
                 position: toast.POSITION.BOTTOM_CENTER
             });
+            history.push('/newuser');
         })
             .catch((err) => {
                 toast.error(err.message, {
@@ -146,9 +158,9 @@ function NewRequest() {
     return <div className='content'><Navbar></Navbar><div className='add-request'><div className='card'>
         <TextField id="standard-basic" label="FirstName" onChange={firstNameChange} />
         <TextField id="standard-basic" label="LastName" onChange={lastNameChange} />
-        <TextField type="email" id="standard-basic" label="Email" onChange={emailChange} />
+        <TextField id="standard-basic" label="Email" onChange={emailChange} />
         <TextField id="standard-basic" label="Password" onChange={passwordChange} />
-        <TextField id="standard-basic" label="Phone" onChange={phoneChange} />
+        <TextField id="standard-basic" label="Phone +38(000)000-00-00" onChange={phoneChange} />
         <Select
             style={{ margin: '15px', height: '40px', wight: '400px' }}
             labelId="demo-mutiple-chip-label"

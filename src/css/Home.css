@@ -2,3 +2,22 @@
     display:flex;
     flex-direction:row;
 }
+
+.statContainer{
+    display:flex;
+    flex-direction:row;
+}
+
+.popup-content{
+    min-width: 400px;
+}
+
+.react-calendar{
+    width: 400px;
+    margin: auto;
+    margin-top: 20px;
+}
+
+.react-calendar__navigation, .react-calendar__viewContainer{
+    background-color: #E7DFDD;
+}

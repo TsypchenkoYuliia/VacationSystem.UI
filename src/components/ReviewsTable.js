@@ -33,6 +33,7 @@ import { MenuItem } from '@material-ui/core';
 import moment from 'moment';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import StatisticData from './StatisticData';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import { getType } from '../types';
 
@@ -66,7 +67,6 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-  { id: 'id', numeric: false, disablePadding: false, label: 'Request number' },
   { id: 'name', numeric: false, disablePadding: false, label: 'Name' },
   { id: 'state', numeric: false, disablePadding: false, label: 'State' },
   { id: 'type', numeric: false, disablePadding: false, label: 'Type' },
@@ -324,12 +324,6 @@ export default function EnhancedTable(props) {
       });;
   };
 
-  const GetStatistic = (id) => {
-    useEffect(async () => {
-      await getStatisticById(id).then((data) => { setStatistic(data) });
-    }, [])
-  };
-
 
   return (
 
@@ -463,13 +457,13 @@ export default function EnhancedTable(props) {
                         selected={isItemSelected}
                       >
 
-                        <TableCell align="center" component="th" id={labelId} padding="none">{review.id}</TableCell>
+                
                         <TableCell align="center">
                           <Tooltip title={review.request.user.phoneNumber} placement="top-end" arrow>
                             <Button
-                              onClick={() => GetStatistic(review.request.user.id)}
                             >{review.request.user.lastName} {review.request.user.firstName}</Button>
                           </Tooltip>
+                          <StatisticData request={review.request}></StatisticData>
                         </TableCell>
                         <TableCell align="center">{statusStr}</TableCell>
                         <TableCell align="center" >{typeStr}</TableCell>

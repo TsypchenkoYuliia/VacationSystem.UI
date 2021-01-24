@@ -62,13 +62,12 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-  { id: 'id', numeric: false, disablePadding: false, label: 'Number' },
   { id: 'state', numeric: false, disablePadding: false, label: 'State' },
   { id: 'type', numeric: false, disablePadding: false, label: 'Type' },
   { id: 'start', numeric: false, disablePadding: false, label: 'Start date' },
   { id: 'end', numeric: false, disablePadding: false, label: 'End date' },
   { id: 'comment', numeric: false, disablePadding: false, label: 'Comment' },
-  { id: 'details', numeric: false, disablePadding: false, label: 'State details' },
+  { id: 'details', numeric: false, disablePadding: false, label: 'Reviewers comment' },
   { id: 'action', numeric: false, disablePadding: false },
 ];
 
@@ -291,7 +290,7 @@ export default function EnhancedTable(props) {
   const [start, setStart] = React.useState("");
   const [end, setEnd] = React.useState("");
   const [type, setType] = React.useState("");
-  
+
 
   const handleDateChangeFrom = (event) => {
     setStart(moment(event).format('YYYY-MM-DD').toString());
@@ -383,7 +382,7 @@ export default function EnhancedTable(props) {
           <MenuItem value={4}>Sick</MenuItem>
           <MenuItem value=""> All</MenuItem>
         </Select>
-      
+
         <Button onClick={() => filter()} style={{ margin: '15px', height: '40px', wight: '40px', color: '#E7DFDD', background: '#188a05' }}>Filter</Button>
       </div>
 
@@ -449,15 +448,17 @@ export default function EnhancedTable(props) {
                       selected={isItemSelected}
                     >
 
-                      <TableCell align="center" component="th" id={labelId} padding="none">{request.id}</TableCell>
                       <TableCell align="center">{stateStr}</TableCell>
                       <TableCell align="center" >{typeStr}</TableCell>
                       <TableCell align="center" ><Moment format="DD/MM/YYYY">{request.startDate}</Moment></TableCell>
                       <TableCell align="center"><Moment format="DD/MM/YYYY">{request.endDate}</Moment></TableCell>
                       <TableCell align="center" >{request.comment}</TableCell>
-                      <TableCell align="center" >{request.reviews.map((item) => {
-                        return item.comment;
-                      })}</TableCell>
+                      <TableCell align="center" ><div className="commentContainer">{request.reviews.map((item) => {
+                        if (item.comment === null)
+                          return;
+                        else
+                          return <div>{item.comment + "\n\r"}</div>;
+                      })}</div></TableCell>
                       <TableCell align="center">
                         <Button
                           onClick={() => action(request)}
