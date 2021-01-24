@@ -21,6 +21,7 @@ import {getMyRejectedReviews} from '../axios';
 import {actionReview} from '../axios';
 import Moment from 'react-moment';
 import { useHistory } from 'react-router-dom';
+import Tooltip from '@material-ui/core/Tooltip';
 
 
 
@@ -51,7 +52,7 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-  { id: 'id', numeric: false, disablePadding: false, label: 'Number' },
+  { id: 'id', numeric: false, disablePadding: false, label: 'Request number' },
   { id: 'name', numeric: false, disablePadding: false, label: 'Name'},
   { id: 'state', numeric: false, disablePadding: false, label: 'State'},
   { id: 'type', numeric: false, disablePadding: false, label: 'Type' },
@@ -326,7 +327,11 @@ export default function EnhancedTable(props) {
                     >
                       
                       <TableCell align="center" component="th" id={labelId}  padding="none">{review.id}</TableCell>
-                      <TableCell align="center">{review.request.user.lastName} {review.request.user.firstName}</TableCell>
+                      <TableCell align="center">
+                        <Tooltip title={review.request.user.phoneNumber} placement="top-end" arrow>
+                          <Button>{review.request.user.lastName} {review.request.user.firstName}</Button>
+                        </Tooltip>
+                      </TableCell>
                       <TableCell align="center">{statusStr}</TableCell>
                       <TableCell align="center" >{typeStr}</TableCell>
                       <TableCell align="center" ><Moment format="DD/MM/YYYY">{review.request.startDate}</Moment></TableCell>

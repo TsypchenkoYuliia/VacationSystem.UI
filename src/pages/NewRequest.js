@@ -120,7 +120,7 @@ function NewRequest(){
     const sendRequest = ()=>{
 
       let ids = [];
-      ids.push('498f801b-3af8-4795-a6cc-69a25588c8cb');
+      ids.push('7efdc74c-cd4a-4ed8-9096-addb4488f4a8');
 
       personName.map((item)=>{
         dataId.map((user) =>{
@@ -180,7 +180,7 @@ function NewRequest(){
         toast.success("Request created", {
           position: toast.POSITION.BOTTOM_CENTER
         }); 
-  
+        history.replace('/requests');
       })
       .catch((err) => { 
         toast.error(err.message, {

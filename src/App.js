@@ -9,6 +9,10 @@ import Rejected from './pages/Rejected';
 import View from './pages/View';
 import NewRequest from './pages/NewRequest';
 import Header from './components/Header';
+import Admin from './pages/Admin';
+import NewUser from './pages/NewUser'
+import UserView from './pages/UserView';
+
 
 const access_token = localStorage.getItem('access_token');
 const userId = localStorage.getItem('userId');
@@ -40,6 +44,15 @@ function App() {
             </Route>
             <Route path="/rejected" exact>
               <Rejected />
+            </Route>
+            <Route path="/admin" exact>
+              <Admin />
+            </Route>
+            <Route path="/newuser" exact>
+              <NewUser />
+            </Route>
+            <Route path="/userview" exact>
+              <UserView />
             </Route>
             <Route path="/view" exact>
               <View />

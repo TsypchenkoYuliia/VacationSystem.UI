@@ -12,13 +12,26 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Paper from '@material-ui/core/Paper';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
-import Button  from '@material-ui/core/Button';
+import Button from '@material-ui/core/Button';
 import '../css/Table.css';
-import { useEffect, useState} from 'react';
-import {getMyRequests} from '../axios';
-import {actionReview} from '../axios';
+import { useEffect, useState } from 'react';
+import { getMyRequests } from '../axios';
+import { getMyRequestsByFilter } from '../axios';
+import { deleteRequest } from '../axios';
+import { actionReview } from '../axios';
 import Moment from 'react-moment';
 import { useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import InputLabel from '@material-ui/core/InputLabel';
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
+import Select from '@material-ui/core/Select';
+import { MenuItem } from '@material-ui/core';
+import moment from 'moment';
+import TextField from '@material-ui/core/TextField';
+
+toast.configure();
 
 
 
@@ -50,7 +63,7 @@ function stableSort(array, comparator) {
 
 const headCells = [
   { id: 'id', numeric: false, disablePadding: false, label: 'Number' },
-  { id: 'state', numeric: false, disablePadding: false, label: 'State'},
+  { id: 'state', numeric: false, disablePadding: false, label: 'State' },
   { id: 'type', numeric: false, disablePadding: false, label: 'Type' },
   { id: 'start', numeric: false, disablePadding: false, label: 'Start date' },
   { id: 'end', numeric: false, disablePadding: false, label: 'End date' },
@@ -67,8 +80,8 @@ function EnhancedTableHead(props) {
     onRequestSort(event, property);
   };
 
-  
-  
+
+
 
   return (
     <TableHead>
@@ -79,7 +92,7 @@ function EnhancedTableHead(props) {
             align={'center'}
             padding={headCell.disablePadding ? 'none' : 'default'}
             sortDirection={orderBy === headCell.id ? order : false}
-            style={{background:'#ec4c2c', color:'#E7DFDD', fontWeight:'bold'}}
+            style={{ background: '#ec4c2c', color: '#E7DFDD', fontWeight: 'bold' }}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
@@ -119,13 +132,13 @@ const useToolbarStyles = makeStyles((theme) => ({
   highlight:
     theme.palette.type === 'light'
       ? {
-          color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-        }
+        color: theme.palette.secondary.main,
+        backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+      }
       : {
-          color: theme.palette.text.primary,
-          backgroundColor: theme.palette.secondary.dark,
-        },
+        color: theme.palette.text.primary,
+        backgroundColor: theme.palette.secondary.dark,
+      },
   title: {
     flex: '1 1 100%',
   },
@@ -146,7 +159,7 @@ EnhancedTableToolbar.propTypes = {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    margin:'auto',
+    margin: 'auto',
     width: '93%',
   },
   paper: {
@@ -167,8 +180,8 @@ const useStyles = makeStyles((theme) => ({
     top: 20,
     width: 1,
   },
-  cell:{
-    backgroundcolor:'red',
+  cell: {
+    backgroundcolor: 'red',
   },
 }));
 
@@ -232,34 +245,150 @@ export default function EnhancedTable(props) {
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
   let [requests, setRequests] = useState([]);
-  
+
 
   useEffect(() => {
     async function getAllData() {
       await getMyRequests().then(({ data }) => {
-        setRequests(data); 
+        setRequests(data);
 
-        });
+      });
     }
-   getAllData();
+    getAllData();
   }, []);
 
-  
-  
+
+
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, requests.length - page * rowsPerPage);
   let history = useHistory();
 
-  function action(request)
-  {
+  function action(request) {
     localStorage.setItem('request', request.id);
     history.replace('/view');
   }
 
+  function remove(request) {
+    localStorage.removeItem('request');
+
+    deleteRequest(request.id).then(({ data }) => {
+      toast.success("Request deleted", {
+        position: toast.POSITION.BOTTOM_CENTER
+      });
+      getMyRequests().then(({ data }) => {
+        setRequests(data);
+      });
+    })
+      .catch((err) => {
+        toast.error(err.message, {
+          position: toast.POSITION.BOTTOM_CENTER
+        });
+      });;
+  }
+
+  const [selectedDateFrom, setSelectedDateFrom] = React.useState(new Date('2021-01-01'));
+  const [selectedDateTo, setSelectedDateTo] = React.useState(new Date('2021-12-31'));
+  const [state, setState] = React.useState("");
+  const [start, setStart] = React.useState("");
+  const [end, setEnd] = React.useState("");
+  const [type, setType] = React.useState("");
+  
+
+  const handleDateChangeFrom = (event) => {
+    setStart(moment(event).format('YYYY-MM-DD').toString());
+    setSelectedDateFrom(event);
+  };
+
+  const handleDateChangeTo = (event) => {
+    setEnd(moment(event).format('YYYY-MM-DD').toString());
+    setSelectedDateTo(event);
+  };
+
+  const stateChange = (event) => {
+    setState(event.target.value);
+  };
+
+  const typeChange = (event) => {
+    setType(event.target.value);
+  };
+
+  const filter = () => {
+    getMyRequestsByFilter(start, end, state, type).then(({ data }) => {
+      setRequests(data);
+    })
+      .catch((err) => {
+        toast.error(err.message, {
+          position: toast.POSITION.BOTTOM_CENTER
+        });
+      });;
+  };
+
+
   return (
-    
+
     <div className={classes.root}>
+
+      <div className='filterContainer'>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <KeyboardDatePicker
+            style={{ width: '170px' }}
+            disableToolbar
+            variant="inline"
+            format="dd/MM/yyyy"
+            margin="normal"
+            id="date-picker-inline"
+            label="From"
+            value={selectedDateFrom}
+            onChange={handleDateChangeFrom}
+            KeyboardButtonProps={{
+              'aria-label': 'change date',
+            }}
+          />
+          <KeyboardDatePicker
+            style={{ width: '170px', marginLeft: '20px' }}
+            disableToolbar
+            variant="inline"
+            format="dd/MM/yyyy"
+            margin="normal"
+            id="date-picker-inline"
+            label="To"
+            value={selectedDateTo}
+            onChange={handleDateChangeTo}
+            KeyboardButtonProps={{
+              'aria-label': 'change date',
+            }}
+          />
+        </MuiPickersUtilsProvider>
+        <InputLabel id="demo-simple-select-label" style={{ margin: '30px', marginRight: '2px' }}>State:</InputLabel>
+        <Select
+          style={{ minWidth: '200px', margin: '32px', marginLeft: '5px' }}
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          onChange={stateChange}>
+
+          <MenuItem value={1}>New</MenuItem>
+          <MenuItem value={2}>In progress</MenuItem>
+          <MenuItem value={3}>Approved</MenuItem>
+          <MenuItem value={4}>Rejected</MenuItem>
+          <MenuItem value=""> All</MenuItem>
+        </Select>
+        <InputLabel id="demo-simple-select-label" style={{ margin: '30px', marginRight: '2px' }}>Type:</InputLabel>
+        <Select
+          style={{ minWidth: '200px', margin: '32px', marginLeft: '5px' }}
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          onChange={typeChange}>
+          <MenuItem value={1}>Administrative</MenuItem>
+          <MenuItem value={2}>Annual</MenuItem>
+          <MenuItem value={3}>Study</MenuItem>
+          <MenuItem value={4}>Sick</MenuItem>
+          <MenuItem value=""> All</MenuItem>
+        </Select>
+      
+        <Button onClick={() => filter()} style={{ margin: '15px', height: '40px', wight: '40px', color: '#E7DFDD', background: '#188a05' }}>Filter</Button>
+      </div>
+
       <Paper className={classes.paper}
-      style={{background:'#188a05'}}>
+        style={{ background: '#188a05' }}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
           <Table
@@ -267,7 +396,7 @@ export default function EnhancedTable(props) {
             aria-labelledby="tableTitle"
             size={dense ? 'small' : 'medium'}
             aria-label="enhanced table"
-            style={{background:'#E7DFDD'}}
+            style={{ background: '#E7DFDD' }}
           >
             <EnhancedTableHead
               classes={classes}
@@ -277,7 +406,7 @@ export default function EnhancedTable(props) {
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
               rowCount={requests.length}
-              
+
             />
             <TableBody>
               {stableSort(requests, getComparator(order, orderBy))
@@ -287,25 +416,25 @@ export default function EnhancedTable(props) {
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   let typeStr = "";
-                 
-                  if(request.type==1)
+
+                  if (request.type == 1)
                     typeStr = 'Administrative'
-                  if(request.type==2)
+                  if (request.type == 2)
                     typeStr = 'Annual'
-                  if(request.type==3)
+                  if (request.type == 3)
                     typeStr = 'Study'
-                  if(request.type==4)
+                  if (request.type == 4)
                     typeStr = 'Sick'
 
-                    let stateStr = "";
-                 
-                  if(request.state==1)
+                  let stateStr = "";
+
+                  if (request.state == 1)
                     stateStr = 'New'
-                  if(request.state==2)
+                  if (request.state == 2)
                     stateStr = 'In Progress'
-                  if(request.state==3)
+                  if (request.state == 3)
                     stateStr = 'Approved'
-                  if(request.state==4)
+                  if (request.state == 4)
                     stateStr = 'Rejected'
 
                   return (
@@ -319,28 +448,32 @@ export default function EnhancedTable(props) {
                       key={request.id}
                       selected={isItemSelected}
                     >
-                      
-                      <TableCell align="center" component="th" id={labelId}  padding="none">{request.id}</TableCell>
+
+                      <TableCell align="center" component="th" id={labelId} padding="none">{request.id}</TableCell>
                       <TableCell align="center">{stateStr}</TableCell>
                       <TableCell align="center" >{typeStr}</TableCell>
                       <TableCell align="center" ><Moment format="DD/MM/YYYY">{request.startDate}</Moment></TableCell>
                       <TableCell align="center"><Moment format="DD/MM/YYYY">{request.endDate}</Moment></TableCell>
                       <TableCell align="center" >{request.comment}</TableCell>
-                      <TableCell align="center" >{request.reviews.map((item)=>{
+                      <TableCell align="center" >{request.reviews.map((item) => {
                         return item.comment;
                       })}</TableCell>
                       <TableCell align="center">
                         <Button
-                        onClick={() => action(request)}
-                        style={{margin:'15px', height:'40px', wight:'40px', color:'#E7DFDD', background:'#188a05'}}
+                          onClick={() => action(request)}
+                          style={{ margin: '15px', height: '40px', wight: '40px', color: '#E7DFDD', background: '#188a05' }}
                         >View</Button>
-                        </TableCell>                     
+                        <Button
+                          onClick={() => remove(request)}
+                          style={{ margin: '15px', height: '40px', wight: '40px', color: '#E7DFDD', background: '#188a05' }}
+                        >Delete</Button>
+                      </TableCell>
                     </TableRow>
                   );
                 })}
               {emptyRows > 0 && (
-                <TableRow style={{ height: (dense ? 13 : 53) * emptyRows}}>
-                  
+                <TableRow style={{ height: (dense ? 13 : 53) * emptyRows }}>
+
                 </TableRow>
               )}
             </TableBody>

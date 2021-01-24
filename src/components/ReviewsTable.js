@@ -12,19 +12,31 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Paper from '@material-ui/core/Paper';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
-import Button  from '@material-ui/core/Button';
+import Button from '@material-ui/core/Button';
 import '../css/Table.css';
-import { useEffect, useState} from 'react';
-import {getMyReviews} from '../axios';
-import {getMyApprovedReviews} from '../axios';
-import {getMyRejectedReviews} from '../axios';
-import {actionReview} from '../axios';
+import { useEffect, useState } from 'react';
+import { getMyReviews } from '../axios';
+import { getStatisticById } from '../axios';
+import { getMyReviewsByFilter } from '../axios';
+import { actionReview } from '../axios';
 import Moment from 'react-moment';
 import { useHistory } from 'react-router-dom';
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import TextField from '@material-ui/core/TextField';
+import Tooltip from '@material-ui/core/Tooltip';
+import InputLabel from '@material-ui/core/InputLabel';
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
+import Select from '@material-ui/core/Select';
+import { MenuItem } from '@material-ui/core';
+import moment from 'moment';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import AssessmentIcon from '@material-ui/icons/Assessment';
+import { getType } from '../types';
 
+toast.configure();
 
 
 function descendingComparator(a, b, orderBy) {
@@ -54,9 +66,9 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-  { id: 'id', numeric: false, disablePadding: false, label: 'Number' },
-  { id: 'name', numeric: false, disablePadding: false, label: 'Name'},
-  { id: 'state', numeric: false, disablePadding: false, label: 'State'},
+  { id: 'id', numeric: false, disablePadding: false, label: 'Request number' },
+  { id: 'name', numeric: false, disablePadding: false, label: 'Name' },
+  { id: 'state', numeric: false, disablePadding: false, label: 'State' },
   { id: 'type', numeric: false, disablePadding: false, label: 'Type' },
   { id: 'start', numeric: false, disablePadding: false, label: 'Start date' },
   { id: 'end', numeric: false, disablePadding: false, label: 'End date' },
@@ -73,8 +85,8 @@ function EnhancedTableHead(props) {
     onRequestSort(event, property);
   };
 
-  
-  
+
+
 
   return (
     <TableHead>
@@ -85,7 +97,7 @@ function EnhancedTableHead(props) {
             align={'center'}
             padding={headCell.disablePadding ? 'none' : 'default'}
             sortDirection={orderBy === headCell.id ? order : false}
-            style={{background:'#ec4c2c', color:'#E7DFDD', fontWeight:'bold'}}
+            style={{ background: '#ec4c2c', color: '#E7DFDD', fontWeight: 'bold' }}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
@@ -125,13 +137,13 @@ const useToolbarStyles = makeStyles((theme) => ({
   highlight:
     theme.palette.type === 'light'
       ? {
-          color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-        }
+        color: theme.palette.secondary.main,
+        backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+      }
       : {
-          color: theme.palette.text.primary,
-          backgroundColor: theme.palette.secondary.dark,
-        },
+        color: theme.palette.text.primary,
+        backgroundColor: theme.palette.secondary.dark,
+      },
   title: {
     flex: '1 1 100%',
   },
@@ -152,7 +164,7 @@ EnhancedTableToolbar.propTypes = {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    margin:'auto',
+    margin: 'auto',
     width: '93%',
   },
   paper: {
@@ -173,8 +185,8 @@ const useStyles = makeStyles((theme) => ({
     top: 20,
     width: 1,
   },
-  cell:{
-    backgroundcolor:'red',
+  cell: {
+    backgroundcolor: 'red',
   },
 }));
 
@@ -239,31 +251,29 @@ export default function EnhancedTable(props) {
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
   let [reviews, setReviews] = useState([]);
-  
+
 
   useEffect(() => {
-    async function getAllData() { 
+    async function getAllData() {
       await getMyReviews().then(({ data }) => {
-        setReviews(data);         
-        });
+        setReviews(data);
+      });
     }
-   getAllData();
+    getAllData();
   }, []);
-  
+
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, reviews.length - page * rowsPerPage);
 
-  function action(review)
-  {
-      review.comment = comment;
-      review.isApproved = 'true';
-      actionReview(review);
+  function action(review) {
+    review.comment = comment;
+    review.isApproved = 'true';
+    actionReview(review);
   }
 
-  function reject(review)
-  {
-      review.comment = comment;
-      review.isApproved = 'false';
-      actionReview(review);
+  function reject(review) {
+    review.comment = comment;
+    review.isApproved = 'false';
+    actionReview(review);
   }
 
   const commentChange = (event) => {
@@ -272,11 +282,123 @@ export default function EnhancedTable(props) {
 
   let history = useHistory();
 
+  const [selectedDateFrom, setSelectedDateFrom] = React.useState(new Date('2021-01-01'));
+  const [selectedDateTo, setSelectedDateTo] = React.useState(new Date('2021-12-31'));
+  const [state, setState] = React.useState("");
+  const [start, setStart] = React.useState("");
+  const [end, setEnd] = React.useState("");
+  const [type, setType] = React.useState("");
+  const [name, setName] = React.useState("");
+  const [statistic, setStatistic] = React.useState([]);
+
+  const handleDateChangeFrom = (event) => {
+    setStart(moment(event).format('YYYY-MM-DD').toString());
+    setSelectedDateFrom(event);
+  };
+
+  const handleDateChangeTo = (event) => {
+    setEnd(moment(event).format('YYYY-MM-DD').toString());
+    setSelectedDateTo(event);
+  };
+
+  const stateChange = (event) => {
+    setState(event.target.value);
+  };
+
+  const typeChange = (event) => {
+    setType(event.target.value);
+  };
+
+  const nameChange = (event) => {
+    setName(event.target.value);
+  };
+
+  const filter = () => {
+    getMyReviewsByFilter(start, end, state, type, name).then(({ data }) => {
+      setReviews(data);
+    })
+      .catch((err) => {
+        toast.error(err.message, {
+          position: toast.POSITION.BOTTOM_CENTER
+        });
+      });;
+  };
+
+  const GetStatistic = (id) => {
+    useEffect(async () => {
+      await getStatisticById(id).then((data) => { setStatistic(data) });
+    }, [])
+  };
+
+
   return (
-    
+
     <div className={classes.root}>
+
+      <div className='filterContainer'>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <KeyboardDatePicker
+            style={{ width: '170px' }}
+            disableToolbar
+            variant="inline"
+            format="dd/MM/yyyy"
+            margin="normal"
+            id="date-picker-inline"
+            label="From"
+            value={selectedDateFrom}
+            onChange={handleDateChangeFrom}
+            KeyboardButtonProps={{
+              'aria-label': 'change date',
+            }}
+          />
+          <KeyboardDatePicker
+            style={{ width: '170px', marginLeft: '20px' }}
+            disableToolbar
+            variant="inline"
+            format="dd/MM/yyyy"
+            margin="normal"
+            id="date-picker-inline"
+            label="To"
+            value={selectedDateTo}
+            onChange={handleDateChangeTo}
+            KeyboardButtonProps={{
+              'aria-label': 'change date',
+            }}
+          />
+        </MuiPickersUtilsProvider>
+        <InputLabel id="demo-simple-select-label" style={{ margin: '30px', marginRight: '2px' }}>State:</InputLabel>
+        <Select
+          style={{ minWidth: '170px', margin: '32px', marginLeft: '5px' }}
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          onChange={stateChange}>
+
+          <MenuItem value={1}>New</MenuItem>
+          <MenuItem value={2}>In progress</MenuItem>
+          <MenuItem value={3}>Approved</MenuItem>
+          <MenuItem value={4}>Rejected</MenuItem>
+          <MenuItem value=""> All</MenuItem>
+        </Select>
+        <InputLabel id="demo-simple-select-label" style={{ margin: '30px', marginRight: '2px' }}>Type:</InputLabel>
+        <Select
+          style={{ minWidth: '170px', margin: '32px', marginLeft: '5px' }}
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          onChange={typeChange}>
+          <MenuItem value={1}>Administrative</MenuItem>
+          <MenuItem value={2}>Annual</MenuItem>
+          <MenuItem value={3}>Study</MenuItem>
+          <MenuItem value={4}>Sick</MenuItem>
+          <MenuItem value=""> All</MenuItem>
+        </Select>
+        <InputLabel id="demo-simple-select-label" style={{ marginRight: '2px', marginTop: '30px' }}>Name</InputLabel>
+        <TextField id="standard-basic" onChange={nameChange} value={name} style={{ minWidth: '120px', margin: '20px', marginTop: '30px' }} />
+        <Button onClick={() => filter()} style={{ margin: '15px', height: '40px', wight: '40px', color: '#E7DFDD', background: '#188a05' }}>Filter</Button>
+      </div>
+
+
       <Paper className={classes.paper}
-      style={{background:'#188a05'}}>
+        style={{ background: '#188a05' }}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
           <Table
@@ -284,7 +406,7 @@ export default function EnhancedTable(props) {
             aria-labelledby="tableTitle"
             size={dense ? 'small' : 'medium'}
             aria-label="enhanced table"
-            style={{background:'#E7DFDD'}}
+            style={{ background: '#E7DFDD' }}
           >
             <EnhancedTableHead
               classes={classes}
@@ -294,82 +416,88 @@ export default function EnhancedTable(props) {
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
               rowCount={reviews.length}
-              
+
             />
             <TableBody>
               {stableSort(reviews, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((review, index) => {
 
-                  if(review.isApproved === null)
-                  {
-                  const isItemSelected = isSelected(review.id);
-                  const labelId = `enhanced-table-checkbox-${index}`;
+                  if (review.isApproved === null) {
+                    const isItemSelected = isSelected(review.id);
+                    const labelId = `enhanced-table-checkbox-${index}`;
 
-                  let typeStr = "";
-                 
-                  if(review.request.type==1)
-                    typeStr = 'Administrative'
-                  if(review.request.type==2)
-                    typeStr = 'Annual'
-                  if(review.request.type==3)
-                    typeStr = 'Study'
-                  if(review.request.type==4)
-                    typeStr = 'Sick'
+                    let typeStr = "";
+
+                    if (review.request.type == 1)
+                      typeStr = 'Administrative'
+                    if (review.request.type == 2)
+                      typeStr = 'Annual'
+                    if (review.request.type == 3)
+                      typeStr = 'Study'
+                    if (review.request.type == 4)
+                      typeStr = 'Sick'
 
                     let statusStr = "";
-                 
-                    if(review.request.state==1)
+
+                    if (review.request.state == 1)
                       statusStr = 'New'
-                    if(review.request.state==2)
+                    if (review.request.state == 2)
                       statusStr = 'In progress'
-                    if(review.request.state==3)
+                    if (review.request.state == 3)
                       statusStr = 'Approved'
-                    if(review.request.state==4)
+                    if (review.request.state == 4)
                       statusStr = 'Rejected'
 
-                    
 
-                  return (
 
-                    <TableRow
-                      hover
-                      onClick={(event) => handleClick(event, review.id)}
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={review.id}
-                      selected={isItemSelected}
-                    >
-                      
-                      <TableCell align="center" component="th" id={labelId}  padding="none">{review.id}</TableCell>
-                      <TableCell align="center">{review.request.user.lastName} {review.request.user.firstName}</TableCell>
-                      <TableCell align="center">{statusStr}</TableCell>
-                      <TableCell align="center" >{typeStr}</TableCell>
-                      <TableCell align="center" ><Moment format="DD/MM/YYYY">{review.request.startDate}</Moment></TableCell>
-                      <TableCell align="center"><Moment format="DD/MM/YYYY">{review.request.endDate}</Moment></TableCell>
-                      <TableCell align="center" >{review.request.comment}</TableCell>
-                      <TableCell align="center">
-                      <Popup trigger={<Button>...</Button>} position="right center">
-                        <div><TextField id="standard-basic" onChange={commentChange} value={comment}/></div>
-                      </Popup>
-                      </TableCell>
-                      <TableCell align="center">
-                      <Button
-                        onClick={() => action(review)}
-                        style={{margin:'15px', height:'40px', wight:'40px', color:'#E7DFDD', background:'#188a05'}}
-                        >Approve</Button>
-                      <Button
-                        onClick={() => reject(review)}
-                        style={{margin:'15px', height:'40px', wight:'40px', color:'#E7DFDD', background:'#ec4c2c'}}
-                        >Reject</Button>
-                        </TableCell>                     
-                    </TableRow>
-                  );
-                  }})}
+                    return (
+
+                      <TableRow
+                        hover
+                        onClick={(event) => handleClick(event, review.id)}
+                        role="checkbox"
+                        aria-checked={isItemSelected}
+                        tabIndex={-1}
+                        key={review.id}
+                        selected={isItemSelected}
+                      >
+
+                        <TableCell align="center" component="th" id={labelId} padding="none">{review.id}</TableCell>
+                        <TableCell align="center">
+                          <Tooltip title={review.request.user.phoneNumber} placement="top-end" arrow>
+                            <Button
+                              onClick={() => GetStatistic(review.request.user.id)}
+                            >{review.request.user.lastName} {review.request.user.firstName}</Button>
+                          </Tooltip>
+                        </TableCell>
+                        <TableCell align="center">{statusStr}</TableCell>
+                        <TableCell align="center" >{typeStr}</TableCell>
+                        <TableCell align="center" ><Moment format="DD/MM/YYYY">{review.request.startDate}</Moment></TableCell>
+                        <TableCell align="center"><Moment format="DD/MM/YYYY">{review.request.endDate}</Moment></TableCell>
+                        <TableCell align="center" >{review.request.comment}</TableCell>
+                        <TableCell align="center">
+                          <Popup trigger={<Button>...</Button>} position="right center">
+                            <div><TextField id="standard-basic" onChange={commentChange} value={comment} /></div>
+                          </Popup>
+                        </TableCell>
+                        <TableCell align="center">
+                          <Button
+                            onClick={() => action(review)}
+                            style={{ margin: '15px', height: '40px', wight: '40px', color: '#E7DFDD', background: '#188a05' }}
+                          >Approve</Button>
+                          <Button
+                            onClick={() => reject(review)}
+                            style={{ margin: '15px', height: '40px', wight: '40px', color: '#E7DFDD', background: '#ec4c2c' }}
+                          >Reject</Button>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  }
+                })}
               {emptyRows > 0 && (
-                <TableRow style={{ height: (dense ? 13 : 53) * emptyRows}}>
-                  
+                <TableRow style={{ height: (dense ? 13 : 53) * emptyRows }}>
+
                 </TableRow>
               )}
             </TableBody>
