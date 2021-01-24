@@ -280,20 +280,20 @@ export default function EnhancedTable(props) {
 
         <div className={classes.root}>
             <div className='filterContainer'>
-                <InputLabel id="demo-simple-select-label" style={{ margin: '30px', marginRight:'2px' }}>Role</InputLabel>
+                <InputLabel id="demo-simple-select-label" style={{ margin: '30px', marginRight: '2px' }}>Role</InputLabel>
                 <Select
-                    style={{ minWidth: '200px', margin: '20px', marginLeft:'5px' }}
+                    style={{ minWidth: '200px', margin: '20px', marginLeft: '5px' }}
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     value={role}
                     onChange={roleFilterChange}>
-                    <MenuItem  value="Manager"> Manager</MenuItem>
+                    <MenuItem value="Manager"> Manager</MenuItem>
                     <MenuItem value="Employee"> Employee</MenuItem>
-                    <MenuItem  value=""> All</MenuItem>
+                    <MenuItem value=""> All</MenuItem>
                 </Select>
-                <InputLabel id="demo-simple-select-label" style={{ margin: '30px', marginRight:'2px' }}>Name</InputLabel>
-                <TextField id="standard-basic" onChange={nameChange} value={name} style={{ minWidth: '200px', margin: '20px', marginLeft:'1px' }} />
-                <Button onClick={() => filter()} style={{ margin: '15px', height: '40px', wight: '40px', color:'#E7DFDD', background:'#188a05' }}>Filter</Button>
+                <InputLabel id="demo-simple-select-label" style={{ margin: '30px', marginRight: '2px' }}>Name</InputLabel>
+                <TextField id="standard-basic" onChange={nameChange} value={name} style={{ minWidth: '200px', margin: '20px', marginLeft: '1px' }} />
+                <Button onClick={() => filter()} style={{ margin: '15px', height: '40px', wight: '40px', color: '#E7DFDD', background: '#188a05' }}>Filter</Button>
             </div>
 
             <Paper className={classes.paper}

@@ -119,20 +119,20 @@ function NewRequest() {
         let emailRegex = RegExp(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/);
         let phoneRegex = RegExp(/\+38\(\d{3}\)\d{3}-\d{2}-\d{2}/);
 
-        if(!email.match(emailRegex))
-        {
+        if (!email.match(emailRegex)) {
             toast.error("Email invalid!", {
-                position: toast.POSITION.TOP_CENTER});
+                position: toast.POSITION.TOP_CENTER
+            });
             return;
         }
 
-        if(!phone.match(phoneRegex))
-        {
+        if (!phone.match(phoneRegex)) {
             toast.error("Phone invalid!", {
-                position: toast.POSITION.TOP_CENTER});
+                position: toast.POSITION.TOP_CENTER
+            });
             return;
         }
-         
+
 
         postNewUser({
             firstName: firstName,

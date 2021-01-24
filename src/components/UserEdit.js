@@ -87,7 +87,7 @@ function RequestView() {
   const theme = useTheme();
   const [personName, setPersonName] = React.useState([]);
 
-  
+
 
   const emailChange = (event) => {
     setEmail(event.target.value)
@@ -115,90 +115,90 @@ function RequestView() {
   };
 
   //const back = () => {
-    //history.replace('/requests');
+  //history.replace('/requests');
   //};
 
   const sendRequest = () => {
 
     let newUser = {
-      firstName:firstName,
-      lastName:lastName,
-      email:email,
-      password:password,
-      role:role,
-      phoneNumber:phone,
-      id:user.id
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      password: password,
+      role: role,
+      phoneNumber: phone,
+      id: user.id
     };
 
     UpdateUser(newUser).then(({ data }) => {
       toast.success("User updated", {
-          position: toast.POSITION.BOTTOM_CENTER
+        position: toast.POSITION.BOTTOM_CENTER
       });
-  })
+    })
       .catch((err) => {
-          toast.error(err.message, {
-              position: toast.POSITION.BOTTOM_CENTER
-          });
+        toast.error(err.message, {
+          position: toast.POSITION.BOTTOM_CENTER
+        });
       });;
   };
 
-  const back =() =>{
+  const back = () => {
     history.replace('/admin');
   };
 
 
   return <div>
     <TextField id="standard-basic" label="" onChange={firstNameChange} value="User editing:"
-    style={{marginLeft:'55px', height:'40px', wight:'400px'}}/>  
+      style={{ marginLeft: '55px', height: '40px', wight: '400px' }} />
     <div className='add-request'><div className='card'>
-          <TextField id="standard-basic" label="" onChange={firstNameChange} label={user.firstName}
-          style={{margin:'15px', height:'40px', wight:'400px'}}/>  
-          <TextField id="standard-basic" onChange={lastNameChange} label={user.lastName}
-          style={{margin:'15px', height:'40px', wight:'400px'}}/> 
-          <TextField id="standard-basic" label={user.email} onChange={emailChange}
-          style={{margin:'15px', height:'40px', wight:'400px'}}/> 
-          <TextField  id="standard-basic" label={user.phoneNumber} onChange={phoneChange}
-          style={{margin:'15px', height:'40px', wight:'400px'}}/> 
-          <Select
-          style={{margin:'5px', height:'40px', wight:'400px'}}
-          labelId="demo-mutiple-chip-label"
-          id="demo-mutiple-chip"
-          multiple
-          value={personName}
-          onChange={handleChange}
-          input={<Input id="select-multiple-chip" />}
-          renderValue={(selected) => (
-            <div className={classes.chips}>
-              {selected.map((value) => (
-                <Chip key={value} label={value} className={classes.chip} />
-              ))}
-            </div>
-          )}
-          MenuProps={MenuProps}>
-          {roles.map((name) => (
-            <MenuItem key={name} value={name} style={getStyles(name, personName, theme)}>
-              {name}
-            </MenuItem>
-          ))}
-          </Select>
-          <div className='containerBtn'>
-          <Button 
-            variant="contained" 
-            color="orange" 
-            style={{margin:'auto', marginTop:'20px', height:'40px', wight:'40px', color:'#E7DFDD', background:'#ec4c2c'}}
-            className='login_btn'
-            onClick={sendRequest}>
-            Update
+      <TextField id="standard-basic" label="" onChange={firstNameChange} label={user.firstName}
+        style={{ margin: '15px', height: '40px', wight: '400px' }} />
+      <TextField id="standard-basic" onChange={lastNameChange} label={user.lastName}
+        style={{ margin: '15px', height: '40px', wight: '400px' }} />
+      <TextField id="standard-basic" label={user.email} onChange={emailChange}
+        style={{ margin: '15px', height: '40px', wight: '400px' }} />
+      <TextField id="standard-basic" label={user.phoneNumber} onChange={phoneChange}
+        style={{ margin: '15px', height: '40px', wight: '400px' }} />
+      <Select
+        style={{ margin: '5px', height: '40px', wight: '400px' }}
+        labelId="demo-mutiple-chip-label"
+        id="demo-mutiple-chip"
+        multiple
+        value={personName}
+        onChange={handleChange}
+        input={<Input id="select-multiple-chip" />}
+        renderValue={(selected) => (
+          <div className={classes.chips}>
+            {selected.map((value) => (
+              <Chip key={value} label={value} className={classes.chip} />
+            ))}
+          </div>
+        )}
+        MenuProps={MenuProps}>
+        {roles.map((name) => (
+          <MenuItem key={name} value={name} style={getStyles(name, personName, theme)}>
+            {name}
+          </MenuItem>
+        ))}
+      </Select>
+      <div className='containerBtn'>
+        <Button
+          variant="contained"
+          color="orange"
+          style={{ margin: 'auto', marginTop: '20px', height: '40px', wight: '40px', color: '#E7DFDD', background: '#ec4c2c' }}
+          className='login_btn'
+          onClick={sendRequest}>
+          Update
           </Button>
-          <Button 
-            variant="contained" 
-            color="orange" 
-            style={{margin:'auto', marginTop:'20px', height:'40px', wight:'40px', color:'#E7DFDD', background:'#188a05'}}
-            className='login_btn'
-            onClick={back}>
-            To users
+        <Button
+          variant="contained"
+          color="orange"
+          style={{ margin: 'auto', marginTop: '20px', height: '40px', wight: '40px', color: '#E7DFDD', background: '#188a05' }}
+          className='login_btn'
+          onClick={back}>
+          To users
           </Button></div>
-        </div></div></div>;
+    </div></div></div>;
 };
 
 export default RequestView;

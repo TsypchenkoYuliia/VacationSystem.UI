@@ -4,14 +4,14 @@ import React, { useState } from 'react';
 
 
 
-function Reviews(){
+function Reviews() {
     const [name, setName] = useState('review');
     return <div className='content'>
-            <Navbar></Navbar>
-            <div>
-                <Table name={name}/>        
-            </div>
-        </div>;
+        <Navbar></Navbar>
+        <div>
+            <Table name={name} />
+        </div>
+    </div>;
 }
 
 export default Reviews;

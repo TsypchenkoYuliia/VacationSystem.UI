@@ -4,8 +4,7 @@ import Navbar from '../components/Navbar';
 import { useHistory } from 'react-router-dom';
 
 
-function AdminPage()
-{
+function AdminPage() {
     let history = useHistory();
 
     if (localStorage.getItem('role') !== "Admin")

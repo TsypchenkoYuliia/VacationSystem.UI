@@ -12,13 +12,13 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Paper from '@material-ui/core/Paper';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
-import Button  from '@material-ui/core/Button';
+import Button from '@material-ui/core/Button';
 import '../css/Table.css';
-import { useEffect, useState} from 'react';
-import {getMyReviews} from '../axios';
-import {getMyApprovedReviews} from '../axios';
-import {getMyRejectedReviews} from '../axios';
-import {actionReview} from '../axios';
+import { useEffect, useState } from 'react';
+import { getMyReviews } from '../axios';
+import { getMyApprovedReviews } from '../axios';
+import { getMyRejectedReviews } from '../axios';
+import { actionReview } from '../axios';
 import Moment from 'react-moment';
 import { useHistory } from 'react-router-dom';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -53,8 +53,8 @@ function stableSort(array, comparator) {
 
 const headCells = [
   { id: 'id', numeric: false, disablePadding: false, label: 'Request number' },
-  { id: 'name', numeric: false, disablePadding: false, label: 'Name'},
-  { id: 'state', numeric: false, disablePadding: false, label: 'State'},
+  { id: 'name', numeric: false, disablePadding: false, label: 'Name' },
+  { id: 'state', numeric: false, disablePadding: false, label: 'State' },
   { id: 'type', numeric: false, disablePadding: false, label: 'Type' },
   { id: 'start', numeric: false, disablePadding: false, label: 'Start date' },
   { id: 'end', numeric: false, disablePadding: false, label: 'End date' },
@@ -70,8 +70,8 @@ function EnhancedTableHead(props) {
     onRequestSort(event, property);
   };
 
-  
-  
+
+
 
   return (
     <TableHead>
@@ -82,7 +82,7 @@ function EnhancedTableHead(props) {
             align={'center'}
             padding={headCell.disablePadding ? 'none' : 'default'}
             sortDirection={orderBy === headCell.id ? order : false}
-            style={{background:'#ec4c2c', color:'#E7DFDD', fontWeight:'bold'}}
+            style={{ background: '#ec4c2c', color: '#E7DFDD', fontWeight: 'bold' }}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
@@ -122,13 +122,13 @@ const useToolbarStyles = makeStyles((theme) => ({
   highlight:
     theme.palette.type === 'light'
       ? {
-          color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-        }
+        color: theme.palette.secondary.main,
+        backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+      }
       : {
-          color: theme.palette.text.primary,
-          backgroundColor: theme.palette.secondary.dark,
-        },
+        color: theme.palette.text.primary,
+        backgroundColor: theme.palette.secondary.dark,
+      },
   title: {
     flex: '1 1 100%',
   },
@@ -149,7 +149,7 @@ EnhancedTableToolbar.propTypes = {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    margin:'auto',
+    margin: 'auto',
     width: '93%',
   },
   paper: {
@@ -170,8 +170,8 @@ const useStyles = makeStyles((theme) => ({
     top: 20,
     width: 1,
   },
-  cell:{
-    backgroundcolor:'red',
+  cell: {
+    backgroundcolor: 'red',
   },
 }));
 
@@ -235,32 +235,31 @@ export default function EnhancedTable(props) {
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
   let [reviews, setReviews] = useState([]);
-  
+
 
   useEffect(() => {
-    async function getAllData() { 
+    async function getAllData() {
       await getMyReviews().then(({ data }) => {
-        setReviews(data);         
-        });
+        setReviews(data);
+      });
     }
-   getAllData();
+    getAllData();
   }, []);
-  
+
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, reviews.length - page * rowsPerPage);
 
-  function action(review)
-  {
-      review.isApproved = 'true';
-      actionReview(review);
+  function action(review) {
+    review.isApproved = 'true';
+    actionReview(review);
   }
 
   let history = useHistory();
 
   return (
-    
+
     <div className={classes.root}>
       <Paper className={classes.paper}
-      style={{background:'#188a05'}}>
+        style={{ background: '#188a05' }}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
           <Table
@@ -268,7 +267,7 @@ export default function EnhancedTable(props) {
             aria-labelledby="tableTitle"
             size={dense ? 'small' : 'medium'}
             aria-label="enhanced table"
-            style={{background:'#E7DFDD'}}
+            style={{ background: '#E7DFDD' }}
           >
             <EnhancedTableHead
               classes={classes}
@@ -278,73 +277,73 @@ export default function EnhancedTable(props) {
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
               rowCount={reviews.length}
-              
+
             />
             <TableBody>
               {stableSort(reviews, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((review, index) => {
 
-                  if(review.isApproved !== null && review.isApproved === false)
-                  {
-                  const isItemSelected = isSelected(review.id);
-                  const labelId = `enhanced-table-checkbox-${index}`;
+                  if (review.isApproved !== null && review.isApproved === false) {
+                    const isItemSelected = isSelected(review.id);
+                    const labelId = `enhanced-table-checkbox-${index}`;
 
-                  let typeStr = "";
-                 
-                  if(review.request.type==1)
-                    typeStr = 'Administrative'
-                  if(review.request.type==2)
-                    typeStr = 'Annual'
-                  if(review.request.type==3)
-                    typeStr = 'Study'
-                  if(review.request.type==4)
-                    typeStr = 'Sick'
+                    let typeStr = "";
+
+                    if (review.request.type == 1)
+                      typeStr = 'Administrative'
+                    if (review.request.type == 2)
+                      typeStr = 'Annual'
+                    if (review.request.type == 3)
+                      typeStr = 'Study'
+                    if (review.request.type == 4)
+                      typeStr = 'Sick'
 
                     let statusStr = "";
-                 
-                    if(review.request.state==1)
+
+                    if (review.request.state == 1)
                       statusStr = 'New'
-                    if(review.request.state==2)
+                    if (review.request.state == 2)
                       statusStr = 'In progress'
-                    if(review.request.state==3)
+                    if (review.request.state == 3)
                       statusStr = 'Approved'
-                    if(review.request.state==4)
+                    if (review.request.state == 4)
                       statusStr = 'Rejected'
 
-                    
 
-                  return (
 
-                    <TableRow
-                      hover
-                      onClick={(event) => handleClick(event, review.id)}
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={review.id}
-                      selected={isItemSelected}
-                    >
-                      
-                      <TableCell align="center" component="th" id={labelId}  padding="none">{review.id}</TableCell>
-                      <TableCell align="center">
-                        <Tooltip title={review.request.user.phoneNumber} placement="top-end" arrow>
-                          <Button>{review.request.user.lastName} {review.request.user.firstName}</Button>
-                        </Tooltip>
-                      </TableCell>
-                      <TableCell align="center">{statusStr}</TableCell>
-                      <TableCell align="center" >{typeStr}</TableCell>
-                      <TableCell align="center" ><Moment format="DD/MM/YYYY">{review.request.startDate}</Moment></TableCell>
-                      <TableCell align="center"><Moment format="DD/MM/YYYY">{review.request.endDate}</Moment></TableCell>
-                      <TableCell align="center" >{review.request.comment}</TableCell>
-                      <TableCell align="center">
-                        </TableCell>                     
-                    </TableRow>
-                  );
-                  }})}
+                    return (
+
+                      <TableRow
+                        hover
+                        onClick={(event) => handleClick(event, review.id)}
+                        role="checkbox"
+                        aria-checked={isItemSelected}
+                        tabIndex={-1}
+                        key={review.id}
+                        selected={isItemSelected}
+                      >
+
+                        <TableCell align="center" component="th" id={labelId} padding="none">{review.id}</TableCell>
+                        <TableCell align="center">
+                          <Tooltip title={review.request.user.phoneNumber} placement="top-end" arrow>
+                            <Button>{review.request.user.lastName} {review.request.user.firstName}</Button>
+                          </Tooltip>
+                        </TableCell>
+                        <TableCell align="center">{statusStr}</TableCell>
+                        <TableCell align="center" >{typeStr}</TableCell>
+                        <TableCell align="center" ><Moment format="DD/MM/YYYY">{review.request.startDate}</Moment></TableCell>
+                        <TableCell align="center"><Moment format="DD/MM/YYYY">{review.request.endDate}</Moment></TableCell>
+                        <TableCell align="center" >{review.request.comment}</TableCell>
+                        <TableCell align="center">
+                        </TableCell>
+                      </TableRow>
+                    );
+                  }
+                })}
               {emptyRows > 0 && (
-                <TableRow style={{ height: (dense ? 13 : 53) * emptyRows}}>
-                  
+                <TableRow style={{ height: (dense ? 13 : 53) * emptyRows }}>
+
                 </TableRow>
               )}
             </TableBody>

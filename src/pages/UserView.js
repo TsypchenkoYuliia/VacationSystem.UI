@@ -1,18 +1,18 @@
 import UserEdit from '../components/UserEdit';
 import { useHistory } from 'react-router-dom';
 
-function View(){
+function View() {
 
     let history = useHistory();
 
-    if(localStorage.getItem('role') !== "Admin")
+    if (localStorage.getItem('role') !== "Admin")
         history.replace('/login');
 
     return <div className='content'>
-            <div>
-            <UserEdit/>         
-            </div>
-        </div>;
+        <div>
+            <UserEdit />
+        </div>
+    </div>;
 }
 
 export default View;

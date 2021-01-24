@@ -1,7 +1,7 @@
 import Navbar from '../components/Navbar';
 import RequestsTable from '../components/RequestsTable';
 
-function Requests(){
+function Requests() {
     return <div className='content'><Navbar></Navbar><div><RequestsTable></RequestsTable></div></div>;;
 }
 

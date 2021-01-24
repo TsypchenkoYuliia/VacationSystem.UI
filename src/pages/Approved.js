@@ -3,14 +3,14 @@ import ApprovedReviewsTable from '../components/ApprovedReviewsTable';
 import React, { useState } from 'react';
 
 
-function Approved(){
+function Approved() {
     const [name, setName] = useState('approved');
     return <div className='content'>
-            <Navbar></Navbar>
-            <div>
-            <ApprovedReviewsTable />         
-            </div>
-        </div>;
+        <Navbar></Navbar>
+        <div>
+            <ApprovedReviewsTable />
+        </div>
+    </div>;
 }
 
 export default Approved;

@@ -25,30 +25,30 @@ function Home() {
 
 
     useEffect(() => {
-        async function getAllData() { 
-          await getStatistic().then(({ data }) => {
-            setStatistic(data);   
-            toast.success("Statistics updated", {
-                position: toast.POSITION.BOTTOM_CENTER
-            })
-            });    
+        async function getAllData() {
+            await getStatistic().then(({ data }) => {
+                setStatistic(data);
+                toast.success("Statistics updated", {
+                    position: toast.POSITION.BOTTOM_CENTER
+                })
+            });
         }
-       getAllData();
-      }, []);
+        getAllData();
+    }, []);
 
     { localStorage.getItem('role') === "Accountant" ? history.replace('/reviews') : history.replace('/home') }
 
     return <div className='content'><Navbar></Navbar><div>
         <TextField id="standard-basic" value='Statistics of consumed days of the current year:' style={{ minWidth: '400px', margin: '20px', marginLeft: '100px' }} />
 
-        <div className='chipContainer' style={{ marginLeft: '80px'}}>
+        <div className='chipContainer' style={{ marginLeft: '80px' }}>
 
             {statistic.map((item) =>
-                <Chip avatar={<Avatar style={{ marginRight: '10px', color:'#ec4c2c', fontSize:'20px', width:'50px', height:'50px' }}>{item.days}</Avatar>}
+                <Chip avatar={<Avatar style={{ marginRight: '10px', color: '#ec4c2c', fontSize: '20px', width: '50px', height: '50px' }}>{item.days}</Avatar>}
                     label={getType(item.typeId)}
                     variant="outlined"
-                    style={{ minWidth: '200px', margin: '10px', marginLeft: '20px', width:'150px', height:'70px'}}
-                    />
+                    style={{ minWidth: '200px', margin: '10px', marginLeft: '20px', width: '150px', height: '70px' }}
+                />
             )}
         </div>
         <UserCalendar></UserCalendar>

@@ -1,16 +1,16 @@
 
 
 import RequestView from '../components/RequestView';
-import { useEffect, useState} from 'react';
-import {getRequest} from '../axios';
+import { useEffect, useState } from 'react';
+import { getRequest } from '../axios';
 
-function View(){
+function View() {
 
     return <div className='content'>
-            <div>
-            <RequestView/>         
-            </div>
-        </div>;
+        <div>
+            <RequestView />
+        </div>
+    </div>;
 }
 
 export default View;
