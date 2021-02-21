@@ -17,7 +17,7 @@ function Login() {
 
   const sendForm = () => {
 
-    const url = 'https://localhost:44397/login';
+    const url = 'https://vacationssystem.azurewebsites.net/';
 
     axios.post(url, { username: username, password: password })
       .then((response) => {

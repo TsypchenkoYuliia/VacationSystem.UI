@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://localhost:44397/';
+const BASE_URL = 'https://vacationssystem.azurewebsites.net/';
 
 const axiosApi = axios.create({
   baseURL: BASE_URL,
