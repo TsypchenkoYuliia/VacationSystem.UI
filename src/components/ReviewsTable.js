@@ -68,6 +68,7 @@ function stableSort(array, comparator) {
 
 const headCells = [
   { id: 'name', numeric: false, disablePadding: false, label: 'Name' },
+  { id: 'statistic', numeric: false, disablePadding: false, label: 'Statistic' },
   { id: 'state', numeric: false, disablePadding: false, label: 'State' },
   { id: 'type', numeric: false, disablePadding: false, label: 'Type' },
   { id: 'start', numeric: false, disablePadding: false, label: 'Start date' },
@@ -97,7 +98,7 @@ function EnhancedTableHead(props) {
             align={'center'}
             padding={headCell.disablePadding ? 'none' : 'default'}
             sortDirection={orderBy === headCell.id ? order : false}
-            style={{ background: '#ec4c2c', color: '#E7DFDD', fontWeight: 'bold' }}
+            style={{ backgroundColor: '#189AB4', color: '#D4F1F4', fontWeight: 'bold' }}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
@@ -183,7 +184,7 @@ const useStyles = makeStyles((theme) => ({
     padding: 0,
     position: 'absolute',
     top: 20,
-    width: 1,
+    width: 1
   },
   cell: {
     backgroundcolor: 'red',
@@ -387,12 +388,12 @@ export default function EnhancedTable(props) {
         </Select>
         <InputLabel id="demo-simple-select-label" style={{ marginRight: '2px', marginTop: '30px' }}>Name</InputLabel>
         <TextField id="standard-basic" onChange={nameChange} value={name} style={{ minWidth: '120px', margin: '20px', marginTop: '30px' }} />
-        <Button onClick={() => filter()} style={{ margin: '15px', height: '40px', wight: '40px', color: '#E7DFDD', background: '#188a05' }}>Filter</Button>
+        <Button onClick={() => filter()} style={{ margin: '15px', height: '40px', wight: '40px', color: '#05445E', background: '#189AB4'}}>Filter</Button>
       </div>
 
 
       <Paper className={classes.paper}
-        style={{ background: '#188a05' }}>
+        style={{ background: '#189AB4' }}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
           <Table
@@ -400,7 +401,7 @@ export default function EnhancedTable(props) {
             aria-labelledby="tableTitle"
             size={dense ? 'small' : 'medium'}
             aria-label="enhanced table"
-            style={{ background: '#E7DFDD' }}
+            style={{ background: '#D4F1F4' }}
           >
             <EnhancedTableHead
               classes={classes}
@@ -463,8 +464,8 @@ export default function EnhancedTable(props) {
                             <Button
                             >{review.request.user.lastName} {review.request.user.firstName}</Button>
                           </Tooltip>
-                          <StatisticData request={review.request}></StatisticData>
                         </TableCell>
+                        <TableCell align="center"><StatisticData request={review.request}></StatisticData></TableCell>
                         <TableCell align="center">{statusStr}</TableCell>
                         <TableCell align="center" >{typeStr}</TableCell>
                         <TableCell align="center" ><Moment format="DD/MM/YYYY">{review.request.startDate}</Moment></TableCell>
@@ -478,11 +479,11 @@ export default function EnhancedTable(props) {
                         <TableCell align="center">
                           <Button
                             onClick={() => action(review)}
-                            style={{ margin: '15px', height: '40px', wight: '40px', color: '#E7DFDD', background: '#188a05' }}
+                            style={{ height: '20px', wight: '20px', color: '#05445E', textTransform: 'capitalize', backgroundColor:'#75E6DA', padding:'12px'}}
                           >Approve</Button>
                           <Button
                             onClick={() => reject(review)}
-                            style={{ margin: '15px', height: '40px', wight: '40px', color: '#E7DFDD', background: '#ec4c2c' }}
+                            style={{ height: '20px', wight: '20px', color: '#D4F1F4', textTransform: 'capitalize', backgroundColor:'#05445E', padding:'12px'}}
                           >Reject</Button>
                         </TableCell>
                       </TableRow>
@@ -507,10 +508,6 @@ export default function EnhancedTable(props) {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </Paper>
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
-      />
     </div>
   );
 }

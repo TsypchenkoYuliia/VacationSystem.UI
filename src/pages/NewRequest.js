@@ -12,7 +12,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
 import { useHistory } from 'react-router-dom';
-import { getUserById } from '../axios';
+import { getUserById, getType } from '../axios';
 import { getAllManagers } from '../axios';
 import { postNewRequest } from '../axios';
 import moment from 'moment';
@@ -35,8 +35,8 @@ function NewRequest() {
   let [dataId, setDataId] = useState([]);
   let [reviwersId, setReviwersId] = useState([]);
   let [type, setType] = useState("");
-  let [start, setStart] = useState("");
-  let [end, setEnd] = useState("");
+  let [start, setStart] = useState("2021-01-01");
+  let [end, setEnd] = useState("2021-01-01");
   let [comment, setComment] = useState("");
 
 
@@ -139,7 +139,7 @@ function NewRequest() {
     else if (type === 'Sick')
       type = 4
 
-    if (type === null || comment === "") {
+    if (type === null || type === "") {
       toast.warn("Type is empty!", {
         position: toast.POSITION.TOP_CENTER
       });
@@ -182,6 +182,7 @@ function NewRequest() {
       history.replace('/requests');
     })
       .catch((err) => {
+        console.log(err);
         toast.error(err.message, {
           position: toast.POSITION.BOTTOM_CENTER
         });
@@ -194,6 +195,7 @@ function NewRequest() {
   return <div className='content'><Navbar></Navbar><div className='add-request'><div className='card'>
     <Autocomplete id="combo-box-demo" onChange={autocompleteChange}
       options={vacation}
+      defaultValue={vacation[1]}
       getOptionLabel={(option) => option.title}
       style={{ width: 350, margin: '15px', height: '30px' }}
       renderInput={(params) => <TextField {...params} label="Vacation type" variant="outlined" />} />
@@ -238,7 +240,7 @@ function NewRequest() {
     <Button
       variant="contained"
       color="orange"
-      style={{ margin: '15px', height: '40px', wight: '40px', color: '#E7DFDD', background: '#ec4c2c' }}
+      style={{ margin: '15px', height: '40px', wight: '40px', color: '#D4F1F4', background: '#05445E' }}
       className='login_btn'
       onClick={sendRequest}>
       Send

@@ -4,9 +4,9 @@ import { TextField, Button } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import './../css/Login.css';
-import PersonIcon from '@material-ui/icons/Person';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import InputLabel from '@material-ui/core/InputLabel';
 
 function Login() {
 
@@ -40,9 +40,9 @@ function Login() {
 
   return (<div className='form'>
     <form noValidate autoComplete="off" className="login_form">
-      <PersonIcon
-        className='icon' color='#188a05'>
-      </PersonIcon>
+      <InputLabel 
+      style={{ color:'#05445E', margin:'20px', fontSize:'20px', textTransform: 'uppercase', fontWeight:'700'}}
+      id="demo-mutiple-checkbox-label">Vacations  system</InputLabel>
       <TextField
         label="Login"
         variant="outlined"
@@ -59,10 +59,8 @@ function Login() {
         onChange={(e) => setPassword(e.target.value)} />
       <br></br>
       <Button
-        size="large"
+        style={{ backgroundColor: '#05445E', color:'#D4F1F4', margin:'20px' }}
         variant="contained"
-        color="orange"
-        className='login_btn'
         onClick={sendForm}>
         Login</Button>
     </form>

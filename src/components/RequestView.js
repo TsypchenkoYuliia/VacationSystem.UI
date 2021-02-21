@@ -11,11 +11,13 @@ import Input from '@material-ui/core/Input';
 import Chip from '@material-ui/core/Chip';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { getAllManagers } from '../axios';
+import { getUser } from '../axios';
 import Button from '@material-ui/core/Button';
 import moment from 'moment';
 import { updateRequest } from '../axios';
 import { useHistory } from 'react-router-dom';
-
+import { getType } from '../types';
+import { toast } from 'react-toastify';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -47,7 +49,8 @@ function RequestView() {
   let [dataManagers, setDataManagers] = useState([]);
   let [dataId, setDataId] = useState([]);
   let [reviwersId, setReviwersId] = useState([]);
-
+  let [typeId, setTypeId] = useState([]);
+  
 
 
   const vacation = [
@@ -59,9 +62,22 @@ function RequestView() {
   useEffect(() => {
     async function getAllData() {
       await getRequest(localStorage.getItem('request')).then(({ data }) => {
-        setRequest(data);
+        setRequest(data)
 
-      });
+        let selectedReviewer = [];
+
+        data.reviews.map((item)=> {
+          if(item.isApproved === null)
+          selectedReviewer.push(item.reviewer.firstName.concat(' ', item.reviewer.lastName));
+        })
+
+        setPersonName(selectedReviewer);
+
+        setStart(data.startDate);
+        setEnd(data.endDate);
+        setComment(data.comment)
+        setType(data.type);
+      })
     }
     getAllData();
   }, []);
@@ -72,17 +88,20 @@ function RequestView() {
         setDataId(data);
         let arr = data;
         let reviewers = arr.map((item) => {
+
           return item.firstName.concat(' ', item.lastName);
         });
 
         setDataManagers(reviewers);
-
-
-
-      });
+        
+      })
     }
     getAllData();
   }, []);
+
+  
+
+  
 
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
@@ -135,45 +154,52 @@ function RequestView() {
   const sendRequest = () => {
 
     let ids = [];
-    ids.push('498f801b-3af8-4795-a6cc-69a25588c8cb');
-
+    ids.push('3c9015c4-70d2-4b26-8b33-2c709ee79566');
+    
     personName.map((item) => {
       dataId.map((user) => {
-        if (user.firstName.concat(' ', user.lastName) === item) { ids.push(user.id) }
+        if (user.firstName.concat(' ', user.lastName) === item) 
+        { ids.push(user.id) }
       });
     });
 
     setReviwersId(ids);
 
-    if (type === 'Administrative')
-      type = 1
-    else if (type === 'Annual')
-      type = 2
-    else if (type === 'Study')
-      type = 3
-    else if (type === 'Sick')
-      type = 4
-
     let newRequest = {
-      leaveType: type,
+      type: getType(type),
       startDate: moment(start).format('YYYY-MM-DD').toString(),
       endDate: moment(end).format('YYYY-MM-DD').toString(),
-      reviewsId: ids,
+      reviewsIds: ids,
       comment: comment,
       userId: localStorage.getItem('userId')
     };
 
-    updateRequest(request.id, newRequest);
+    updateRequest(request.id, newRequest).then(({ data }) => {
+      toast.success("Request updated", {
+        position: toast.POSITION.BOTTOM_CENTER
+      });
+      history.replace('/requests');
+    })
+      .catch((err) => {
+        toast.error(err.message, {
+          position: toast.POSITION.BOTTOM_CENTER
+        });
+      }
+      );
   };
 
+  return <div>
+    
+    <InputLabel id="demo-mutiple-checkbox-label"
+    style={{ color:'#05445E', marginTop:'20px', marginLeft:'270px', fontSize:'20px', textTransform: 'none', fontWeight:'700' }}
+    >Your current request:</InputLabel>
+    
+    <div className='add-request'><div className='card'>
 
-  return <div><div className='add-request'><div className='card'>
-
-
-
+    
     <Autocomplete id="combo-box-demo" onChange={autocompleteChange}
       options={vacation}
-      //defaultValue = { vacation[request.type] }
+      defaultValue={vacation[1]}
       getOptionLabel={(option) => option.title}
       style={{ width: 350, margin: '15px', height: '30px' }}
       renderInput={(params) => <TextField {...params} label="Vacation type" variant="outlined" />} />
@@ -190,10 +216,10 @@ function RequestView() {
     </div>
 
     <TextField id="standard-basic" onChange={commentChange} value={request.comment} />
+    {/* <InputLabel id="demo-mutiple-checkbox-label">Reviewers:</InputLabel> */}
+    {/* <InputLabel id="demo-mutiple-checkbox-label">1. Accounting department</InputLabel> */}
     <InputLabel id="demo-mutiple-checkbox-label">Reviewers:</InputLabel>
-    <InputLabel id="demo-mutiple-checkbox-label">1. Accounting department</InputLabel>
-    <InputLabel id="demo-mutiple-checkbox-label">Managers:</InputLabel>
-
+    
     <Select
       style={{ margin: '15px', height: '40px', wight: '400px' }}
       labelId="demo-mutiple-chip-label"
@@ -220,7 +246,7 @@ function RequestView() {
       <Button
         variant="contained"
         color="orange"
-        style={{ margin: 'auto', marginTop: '20px', height: '40px', wight: '40px', color: '#E7DFDD', background: '#ec4c2c' }}
+        style={{ margin: 'auto', marginTop: '20px', height: '40px', wight: '40px', color: '#D4F1F4', background: '#05445E' }}
         className='login_btn'
         onClick={sendRequest}>
         Change
@@ -228,7 +254,7 @@ function RequestView() {
       <Button
         variant="contained"
         color="orange"
-        style={{ margin: 'auto', marginTop: '20px', height: '40px', wight: '40px', color: '#E7DFDD', background: '#188a05' }}
+        style={{ margin: 'auto', marginTop: '20px', height: '40px', wight: '40px', color: '#189AB4', background: '#75E6DA' }}
         className='login_btn'
         onClick={back}>
         Cancel

@@ -44,7 +44,7 @@ function Home() {
         <div className='chipContainer' style={{ marginLeft: '80px' }}>
 
             {statistic.map((item) =>
-                <Chip avatar={<Avatar style={{ marginRight: '10px', color: '#ec4c2c', fontSize: '20px', width: '50px', height: '50px' }}>{item.days}</Avatar>}
+                <Chip avatar={<Avatar style={{ marginRight: '10px', color: '#75E6DA', backgroundColor:'#05445E', fontSize: '20px', width: '50px', height: '50px' }}>{item.days}</Avatar>}
                     label={getType(item.typeId)}
                     variant="outlined"
                     style={{ minWidth: '200px', margin: '10px', marginLeft: '20px', width: '150px', height: '70px' }}

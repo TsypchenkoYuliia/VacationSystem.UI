@@ -85,7 +85,7 @@ export const postNewRequest = (newRequest) => {
   };
 
   export const updateRequest = (id, request) => {
-    return axiosApi.put(`requests/${id}`, request);
+    return axiosApi.put(`request/${id}`, request);
   };
 
   export const getUsers = () => {

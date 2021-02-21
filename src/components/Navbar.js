@@ -4,7 +4,6 @@ import '../css/Navbar.css';
 import { Button } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import ListIcon from '@material-ui/icons/List';
-import { getUserById } from '../axios';
 import ViewListIcon from '@material-ui/icons/ViewList';
 import HomeIcon from '@material-ui/icons/Home';
 
@@ -25,34 +24,33 @@ function Navbar() {
                 <Button
                     className="my-requests-btn"
                     variant="outlined"
-                    style={{ height: '40px', width: '160px', minWidth: '140px', margin: '15px', border: '2px solid #ec4c2c', color: '#188a05' }}
+                    style={{ height: '40px', width: '170px', minWidth: '140px', margin: '15px', border: '2px solid #05445E', color: '#D4F1F4', backgroundColor:'#05445E' }}
                     onClick={() => {
                         history.replace('/home');
                     }}>
-                    <HomeIcon style={{ marginTop: '-4px' }}></HomeIcon>
+                    <HomeIcon style={{ marginTop: '-4px', marginRight:'5px' }}></HomeIcon>
                     Home
                 </Button>
 
                 <Button
                     className="requests_newreq-btn"
                     variant="outlined"
-                    style={{ height: '40px', width: '170px', minWidth: '140px', margin: '15px', border: '2px solid #188a05', color: '#188a05' }}
+                    style={{ height: '40px', width: '170px', minWidth: '140px', margin: '15px', border: '2px solid #05445E', color: '#D4F1F4', backgroundColor:'#05445E' }}
                     onClick={() => {
                         history.replace('/newrequest');
                     }}>
-                    <AddIcon></AddIcon>
+                    <AddIcon style={{ marginRight:'5px' }}></AddIcon>
             Vacation
         </Button>
-
                 <Button
                     className="my-requests-btn"
                     variant="outlined"
-                    style={{ height: '40px', width: '160px', minWidth: '140px', margin: '15px', border: '2px solid #ec4c2c', color: '#188a05' }}
+                    style={{ height: '40px', width: '180px', minWidth: '140px', margin: '15px', border: '2px solid #05445E', color: '#D4F1F4', backgroundColor:'#05445E' }}
                     onClick={() => {
                         history.replace('/requests');
                     }}>
-                    <ListIcon></ListIcon>
-            Vacations
+                    <ListIcon style={{ marginRight:'7px' }}></ListIcon>
+                     My Vacations
         </Button>
 
             </div>
@@ -68,31 +66,31 @@ function Navbar() {
                 <Button
                     className="my-reviews-btn"
                     variant="outlined"
-                    style={{ height: '40px', width: '160px', minWidth: '140px', margin: '15px', border: '2px solid #ec4c2c', color: '#188a05' }}
+                    style={{ height: '40px', width: '160px', minWidth: '140px', margin: '15px', border: '2px solid #05445E', color: '#D4F1F4', backgroundColor:'#05445E' }}
                     onClick={() => {
                         history.replace('/reviews');
                     }}>
-                    <ViewListIcon></ViewListIcon>
+                    <ViewListIcon style={{ marginRight:'5px' }}></ViewListIcon>
             Reviews
         </Button>
                 <Button
                     className="my-reviews-btn"
                     variant="outlined"
-                    style={{ height: '40px', width: '160px', minWidth: '140px', margin: '15px', border: '2px solid #ec4c2c', color: '#188a05' }}
+                    style={{ height: '40px', width: '160px', minWidth: '140px', margin: '15px', border: '2px solid #05445E', color: '#D4F1F4', backgroundColor:'#05445E' }}
                     onClick={() => {
                         history.replace('/approved');
                     }}>
-                    <ViewListIcon></ViewListIcon>
+                    <ViewListIcon style={{ marginRight:'5px' }}> </ViewListIcon>
             Approved
         </Button>
                 <Button
                     className="my-reviews-btn"
                     variant="outlined"
-                    style={{ height: '40px', width: '160px', minWidth: '140px', margin: '15px', border: '2px solid #ec4c2c', color: '#188a05' }}
+                    style={{ height: '40px', width: '160px', minWidth: '140px', margin: '15px', border: '2px solid #05445E', color: '#D4F1F4', backgroundColor:'#05445E' }}
                     onClick={() => {
                         history.replace('/rejected');
                     }}>
-                    <ViewListIcon></ViewListIcon>
+                    <ViewListIcon style={{ marginRight:'5px' }}></ViewListIcon>
             Rejected
         </Button></div>
 
@@ -107,7 +105,7 @@ function Navbar() {
                 <Button
                     className="my-requests-btn"
                     variant="outlined"
-                    style={{ height: '40px', width: '160px', minWidth: '140px', margin: '15px', border: '2px solid #ec4c2c', color: '#188a05' }}
+                    style={{ height: '40px', width: '160px', minWidth: '140px', margin: '15px', border: '2px solid #05445E', color: '#D4F1F4', backgroundColor:'#05445E' }}
                     onClick={() => {
                         history.replace('/home');
                     }}>
@@ -118,54 +116,54 @@ function Navbar() {
                 <Button
                     className="requests_newreq-btn"
                     variant="outlined"
-                    style={{ height: '40px', width: '160px', minWidth: '140px', margin: '15px', border: '2px solid #188a05', color: '#188a05' }}
+                    style={{ height: '40px', width: '160px', minWidth: '140px', margin: '15px', border: '2px solid #05445E', color: '#D4F1F4', backgroundColor:'#05445E' }}
                     onClick={() => {
                         history.replace('/newrequest');
                     }}>
-                    <AddIcon></AddIcon>
+                    <AddIcon style={{ marginRight:'5px' }}></AddIcon>
             Vacation
             </Button>
 
                 <Button
                     className="my-requests-btn"
                     variant="outlined"
-                    style={{ height: '40px', width: '160px', minWidth: '140px', margin: '15px', border: '2px solid #188a05', color: '#188a05' }}
+                    style={{ height: '40px', width: '170px', minWidth: '140px', margin: '15px', border: '2px solid #05445E', color: '#D4F1F4', backgroundColor:'#05445E' }}
                     onClick={() => {
                         history.replace('/requests');
                     }}>
-                    <ListIcon></ListIcon>
-            Vacations
+                    <ListIcon style={{ marginRight:'5px' }}></ListIcon>
+                    My Vacations
         </Button>
             </div>
             <div>
                 <Button
                     className="my-reviews-btn"
                     variant="outlined"
-                    style={{ height: '40px', width: '160px', minWidth: '140px', margin: '15px', border: '2px solid #ec4c2c', color: '#188a05' }}
+                    style={{ height: '40px', width: '160px', minWidth: '140px', margin: '15px', border: '2px solid #05445E', color: '#75E6DA', backgroundColor:'#05445E' }}
                     onClick={() => {
                         history.replace('/reviews');
                     }}>
-                    <ViewListIcon></ViewListIcon>
+                    <ViewListIcon style={{ marginRight:'5px' }}></ViewListIcon>
             Reviews
         </Button>
                 <Button
                     className="my-reviews-btn"
                     variant="outlined"
-                    style={{ height: '40px', width: '160px', minWidth: '140px', margin: '15px', border: '2px solid #ec4c2c', color: '#188a05' }}
+                    style={{ height: '40px', width: '160px', minWidth: '140px', margin: '15px', border: '2px solid #05445E', color: '#75E6DA', backgroundColor:'#05445E' }}
                     onClick={() => {
                         history.replace('/approved');
                     }}>
-                    <ViewListIcon></ViewListIcon>
+                    <ViewListIcon style={{ marginRight:'5px' }}></ViewListIcon>
             Approved
         </Button>
                 <Button
                     className="my-reviews-btn"
                     variant="outlined"
-                    style={{ height: '40px', width: '160px', minWidth: '140px', margin: '15px', border: '2px solid #ec4c2c', color: '#188a05' }}
+                    style={{ height: '40px', width: '160px', minWidth: '140px', margin: '15px', border: '2px solid #05445E', color: '#75E6DA', backgroundColor:'#05445E' }}
                     onClick={() => {
                         history.replace('/rejected');
                     }}>
-                    <ViewListIcon></ViewListIcon>
+                    <ViewListIcon style={{ marginRight:'5px' }}></ViewListIcon>
             Rejected
         </Button></div>
 
@@ -177,21 +175,21 @@ function Navbar() {
             <div><Button
                 className="requests_newreq-btn"
                 variant="outlined"
-                style={{ height: '40px', width: '160px', minWidth: '140px', margin: '15px', border: '2px solid #188a05', color: '#188a05' }}
+                style={{ height: '40px', width: '160px', minWidth: '140px', margin: '15px', border: '2px solid #05445E', color: '#D4F1F4', backgroundColor:'#05445E' }}
                 onClick={() => {
                     history.replace('/newuser');
                 }}>
-                <AddIcon></AddIcon>
+                <AddIcon style={{ marginRight:'5px' }}></AddIcon>
             New
         </Button>
                 <Button
                     className="requests_newreq-btn"
                     variant="outlined"
-                    style={{ height: '40px', width: '160px', minWidth: '140px', margin: '15px', border: '2px solid #188a05', color: '#188a05' }}
+                    style={{ height: '40px', width: '160px', minWidth: '140px', margin: '15px', border: '2px solid #05445E', color: '#D4F1F4', backgroundColor:'#05445E' }}
                     onClick={() => {
                         history.replace('/admin');
                     }}>
-                    <ViewListIcon></ViewListIcon>
+                    <ViewListIcon style={{ marginRight:'5px' }}S></ViewListIcon>
             Users
         </Button>
             </div>

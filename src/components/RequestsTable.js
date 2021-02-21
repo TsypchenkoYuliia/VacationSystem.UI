@@ -91,7 +91,7 @@ function EnhancedTableHead(props) {
             align={'center'}
             padding={headCell.disablePadding ? 'none' : 'default'}
             sortDirection={orderBy === headCell.id ? order : false}
-            style={{ background: '#ec4c2c', color: '#E7DFDD', fontWeight: 'bold' }}
+            style={{ background: '#189AB4', color: '#D4F1F4', fontWeight: 'bold'}}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
@@ -383,11 +383,11 @@ export default function EnhancedTable(props) {
           <MenuItem value=""> All</MenuItem>
         </Select>
 
-        <Button onClick={() => filter()} style={{ margin: '15px', height: '40px', wight: '40px', color: '#E7DFDD', background: '#188a05' }}>Filter</Button>
+        <Button onClick={() => filter()} style={{ margin: '15px', height: '40px', wight: '40px', color: '#05445E', background: '#189AB4' }}>Filter</Button>
       </div>
 
       <Paper className={classes.paper}
-        style={{ background: '#188a05' }}>
+        style={{ background: '#189AB4' }}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
           <Table
@@ -395,7 +395,6 @@ export default function EnhancedTable(props) {
             aria-labelledby="tableTitle"
             size={dense ? 'small' : 'medium'}
             aria-label="enhanced table"
-            style={{ background: '#E7DFDD' }}
           >
             <EnhancedTableHead
               classes={classes}
@@ -405,7 +404,6 @@ export default function EnhancedTable(props) {
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
               rowCount={requests.length}
-
             />
             <TableBody>
               {stableSort(requests, getComparator(order, orderBy))
@@ -453,20 +451,21 @@ export default function EnhancedTable(props) {
                       <TableCell align="center" ><Moment format="DD/MM/YYYY">{request.startDate}</Moment></TableCell>
                       <TableCell align="center"><Moment format="DD/MM/YYYY">{request.endDate}</Moment></TableCell>
                       <TableCell align="center" >{request.comment}</TableCell>
-                      <TableCell align="center" ><div className="commentContainer">{request.reviews.map((item) => {
+                      <TableCell align="center" ><div>{request.reviews.map((item) => {
                         if (item.comment === null)
                           return;
                         else
-                          return <div>{item.comment + "\n\r"}</div>;
+                          return <span>{item.comment + ". "}</span>;
                       })}</div></TableCell>
                       <TableCell align="center">
-                        <Button
+                        { stateStr === 'New' || stateStr === 'In Progress' ? <Button
                           onClick={() => action(request)}
-                          style={{ margin: '15px', height: '40px', wight: '40px', color: '#E7DFDD', background: '#188a05' }}
-                        >View</Button>
+                          style={{ height: '20px', wight: '20px', color: '#05445E', textTransform: 'capitalize', backgroundColor:'#75E6DA', padding:'12px'}}
+                        >View</Button>: <div></div>}
+                        
                         <Button
                           onClick={() => remove(request)}
-                          style={{ margin: '15px', height: '40px', wight: '40px', color: '#E7DFDD', background: '#188a05' }}
+                          style={{ float:'right', height: '20px', wight: '20px', color: '#D4F1F4', textTransform: 'capitalize', backgroundColor:'#05445E', padding:'12px'}}
                         >Delete</Button>
                       </TableCell>
                     </TableRow>
@@ -490,10 +489,6 @@ export default function EnhancedTable(props) {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </Paper>
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
-      />
     </div>
   );
 }

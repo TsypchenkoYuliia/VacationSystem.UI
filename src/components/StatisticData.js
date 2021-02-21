@@ -28,7 +28,7 @@ function StatisticData(props) {
     }, []);
 
     return <div><Popup
-        trigger={<Button>days</Button>} position="right center">
+        trigger={<Button style={{textTransform: 'capitalize'}}>days</Button>} position="right center">
         <div className='statContainer'>
             <InputLabel style={{ minWidth: '120px', marginTop: '5px' }}>Current request:</InputLabel>
             <InputLabel style={{ marginTop: '5px', marginLeft: '10px' }}>{getType(props.request.type)}</InputLabel>

@@ -1,5 +1,5 @@
 import './../css/Header.css';
-import logo from './../logo.png';
+import logo2 from './../logo2.png';
 import palm from './../palm.png';
 import { Avatar } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
@@ -28,14 +28,14 @@ function Header() {
     }, []);
 
     return <div className='header'>
-        <img src={logo}></img>
-        <img className='palm' src={palm}></img>
+        <img src={logo2}></img>
         <div className='avatar'>
             <Avatar
-                style={{ margin: '15px', height: '40px', wight: '40px', color: '#E7DFDD', background: '#ec4c2c', fontSize: '30px', padding: '8px', fontFamily: 'Comic Sans', fontstyle: 'italic' }}
+                style={{ margin: '15px', height: '40px', wight: '40px', color: '#D4F1F4', background: '#189AB4', fontSize: '30px', padding: '8px', fontFamily: 'Comic Sans', fontstyle: 'italic' }}
                 onClick={(LogOut)}>
                 {user}
-            </Avatar></div>
+            </Avatar>
+            </div>
     </div>;
 }
 

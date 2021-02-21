@@ -80,7 +80,7 @@ function EnhancedTableHead(props) {
                         align={'center'}
                         padding={headCell.disablePadding ? 'none' : 'default'}
                         sortDirection={orderBy === headCell.id ? order : false}
-                        style={{ background: '#ec4c2c', color: '#E7DFDD', fontWeight: 'bold' }}
+                        style={{ background: '#189AB4', color: '#D4F1F4', fontWeight: 'bold' }}
                     >
                         <TableSortLabel
                             active={orderBy === headCell.id}
@@ -293,11 +293,11 @@ export default function EnhancedTable(props) {
                 </Select>
                 <InputLabel id="demo-simple-select-label" style={{ margin: '30px', marginRight: '2px' }}>Name</InputLabel>
                 <TextField id="standard-basic" onChange={nameChange} value={name} style={{ minWidth: '200px', margin: '20px', marginLeft: '1px' }} />
-                <Button onClick={() => filter()} style={{ margin: '15px', height: '40px', wight: '40px', color: '#E7DFDD', background: '#188a05' }}>Filter</Button>
+                <Button onClick={() => filter()} style={{ margin: '15px', height: '40px', wight: '40px', color: '#D4F1F4', background: '#189AB4' }}>Filter</Button>
             </div>
 
             <Paper className={classes.paper}
-                style={{ background: '#188a05' }}>
+                style={{ background: '#189AB4' }}>
                 <EnhancedTableToolbar numSelected={selected.length} />
                 <TableContainer>
                     <Table
@@ -305,7 +305,7 @@ export default function EnhancedTable(props) {
                         aria-labelledby="tableTitle"
                         size={dense ? 'small' : 'medium'}
                         aria-label="enhanced table"
-                        style={{ background: '#E7DFDD' }}
+                        style={{ background: '#189AB4' }}
                     >
                         <EnhancedTableHead
                             classes={classes}
@@ -342,7 +342,7 @@ export default function EnhancedTable(props) {
                                             <TableCell align="center">
                                                 <Button
                                                     onClick={() => edit(user)}
-                                                    style={{ margin: '15px', height: '40px', wight: '40px', color: '#E7DFDD', background: '#188a05' }}>Edit</Button>
+                                                    style={{ height: '20px', wight: '20px', color: '#D4F1F4', textTransform: 'capitalize', backgroundColor:'#05445E', padding:'12px'}}>Edit</Button>
                                             </TableCell>
                                         </TableRow>
                                     );
@@ -365,10 +365,7 @@ export default function EnhancedTable(props) {
                     onChangeRowsPerPage={handleChangeRowsPerPage}
                 />
             </Paper>
-            <FormControlLabel
-                control={<Switch checked={dense} onChange={handleChangeDense} />}
-                label="Dense padding"
-            />
+            
         </div>
     </div>
     );

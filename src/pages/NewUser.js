@@ -37,6 +37,7 @@ function NewRequest() {
     let [password, setPassword] = useState("");
     let [phone, setPhone] = useState("");
     let [role, setRole] = useState("");
+    let [roleIndex, setRoleIndex] = useState();
 
     useEffect(() => {
         async function getAllData() {
@@ -45,6 +46,7 @@ function NewRequest() {
             });
         }
         getAllData();
+        
     }, []);
 
     const useStyles = makeStyles((theme) => ({
@@ -145,7 +147,7 @@ function NewRequest() {
             toast.success("User created", {
                 position: toast.POSITION.BOTTOM_CENTER
             });
-            history.push('/newuser');
+            history.push('/admin');
         })
             .catch((err) => {
                 toast.error(err.message, {
@@ -161,32 +163,26 @@ function NewRequest() {
         <TextField id="standard-basic" label="Email" onChange={emailChange} />
         <TextField id="standard-basic" label="Password" onChange={passwordChange} />
         <TextField id="standard-basic" label="Phone +38(000)000-00-00" onChange={phoneChange} />
+        <InputLabel id="select-multiple-chip" 
+        style={{ margin: '25px'}}
+        >Choose a role:</InputLabel>
         <Select
-            style={{ margin: '15px', height: '40px', wight: '400px' }}
-            labelId="demo-mutiple-chip-label"
-            id="demo-mutiple-chip"
-            multiple
-            value={personName}
-            onChange={handleChange}
-            input={<Input id="select-multiple-chip" />}
-            renderValue={(selected) => (
-                <div className={classes.chips}>
-                    {selected.map((value) => (
-                        <Chip key={value} label={value} className={classes.chip} />
-                    ))}
-                </div>
-            )}
-            MenuProps={MenuProps}>
-            {roles.map((name) => (
-                <MenuItem key={name} value={name} style={getStyles(name, personName, theme)}>
-                    {name}
-                </MenuItem>
-            ))}
-        </Select>
+                            value={roleIndex}
+                            defaultValue={0}
+                            onChange={(event) => {
+                                event.target.value === 0 ? setRole("Employee"):setRole("Manager");
+                                setRoleIndex(event.target.value); 
+                            }}>
+                            {roles.map((obj, idx) => (
+                              <MenuItem key={`key-${idx}-name${obj}`} value={idx}>
+                                {obj}
+                              </MenuItem>
+                            ))}
+                          </Select>
         <Button
             variant="contained"
             color="orange"
-            style={{ margin: '15px', height: '40px', wight: '40px', color: '#E7DFDD', background: '#ec4c2c' }}
+            style={{ margin: '15px', height: '40px', wight: '40px', color: '#D4F1F4', background: '#05445E',  marginTop: '25px'}}
             className='login_btn'
             onClick={sendRequest}>
             Add

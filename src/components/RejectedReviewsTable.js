@@ -82,7 +82,7 @@ function EnhancedTableHead(props) {
             align={'center'}
             padding={headCell.disablePadding ? 'none' : 'default'}
             sortDirection={orderBy === headCell.id ? order : false}
-            style={{ background: '#ec4c2c', color: '#E7DFDD', fontWeight: 'bold' }}
+            style={{ backgroundColor: '#189AB4', color: '#D4F1F4', fontWeight: 'bold' }}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
@@ -259,7 +259,7 @@ export default function EnhancedTable(props) {
 
     <div className={classes.root}>
       <Paper className={classes.paper}
-        style={{ background: '#188a05' }}>
+        style={{ background: '#189AB4' }}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
           <Table
@@ -267,7 +267,7 @@ export default function EnhancedTable(props) {
             aria-labelledby="tableTitle"
             size={dense ? 'small' : 'medium'}
             aria-label="enhanced table"
-            style={{ background: '#E7DFDD' }}
+            style={{ background: '#D4F1F4' }}
           >
             <EnhancedTableHead
               classes={classes}
@@ -359,10 +359,6 @@ export default function EnhancedTable(props) {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </Paper>
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
-      />
     </div>
   );
 }

@@ -8,11 +8,11 @@
 .card{
     margin-top:30px;
     padding:20px;
-    border:3px solid #188a05;
+    border:3px solid #41729F;
     border-radius: 10% 10%;
     flex-direction:column;
     display:flex;
-    width: 500px;
+    width: 380px;
 }
 
 .dates{

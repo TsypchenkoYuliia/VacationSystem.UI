@@ -3,5 +3,7 @@
 .navbar{
     margin-top:25px;
     margin-left:40px;
+    display:flex;
+    flex-direction:row;
 }
 

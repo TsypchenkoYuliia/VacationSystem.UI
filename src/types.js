@@ -8,3 +8,14 @@ export const getType = (id) => {
     else if (id === 4)
         return 'Sick'
 };
+
+export const getTypeId = (type) => {
+    if (type === 'Administrative')
+        return 1
+    else if (type === 'Annual')
+        return 2
+    else if (type === 'Study')
+        return 3
+    else if (type === 'Sick')
+        return 4
+};
