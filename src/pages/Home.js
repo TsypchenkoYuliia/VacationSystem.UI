@@ -10,7 +10,6 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { getStatistic } from '../axios';
 import { getType } from '../types';
-import { InputLabel } from '@material-ui/core';
 import UserCalendar from '../components/Calendar';
 
 toast.configure();

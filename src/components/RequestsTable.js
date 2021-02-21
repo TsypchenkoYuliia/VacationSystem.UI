@@ -10,15 +10,12 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Paper from '@material-ui/core/Paper';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
 import Button from '@material-ui/core/Button';
 import '../css/Table.css';
 import { useEffect, useState } from 'react';
 import { getMyRequests } from '../axios';
 import { getMyRequestsByFilter } from '../axios';
 import { deleteRequest } from '../axios';
-import { actionReview } from '../axios';
 import Moment from 'react-moment';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -29,7 +26,6 @@ import DateFnsUtils from '@date-io/date-fns';
 import Select from '@material-ui/core/Select';
 import { MenuItem } from '@material-ui/core';
 import moment from 'moment';
-import TextField from '@material-ui/core/TextField';
 
 toast.configure();
 

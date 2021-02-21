@@ -10,13 +10,10 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Paper from '@material-ui/core/Paper';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
 import Button from '@material-ui/core/Button';
 import '../css/Table.css';
 import { useEffect, useState } from 'react';
 import { getMyReviews } from '../axios';
-import { getStatisticById } from '../axios';
 import { getMyReviewsByFilter } from '../axios';
 import { actionReview } from '../axios';
 import Moment from 'react-moment';
@@ -34,8 +31,6 @@ import moment from 'moment';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import StatisticData from './StatisticData';
-import AssessmentIcon from '@material-ui/icons/Assessment';
-import { getType } from '../types';
 
 toast.configure();
 

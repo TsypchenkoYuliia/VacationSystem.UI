@@ -11,7 +11,6 @@ import Input from '@material-ui/core/Input';
 import Chip from '@material-ui/core/Chip';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { getAllManagers } from '../axios';
-import { getUser } from '../axios';
 import Button from '@material-ui/core/Button';
 import moment from 'moment';
 import { updateRequest } from '../axios';

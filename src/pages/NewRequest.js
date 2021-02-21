@@ -12,7 +12,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
 import { useHistory } from 'react-router-dom';
-import { getUserById, getType } from '../axios';
 import { getAllManagers } from '../axios';
 import { postNewRequest } from '../axios';
 import moment from 'moment';

@@ -1,6 +1,5 @@
 import './../css/Header.css';
 import logo2 from './../logo2.png';
-import palm from './../palm.png';
 import { Avatar } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { useEffect, useState } from 'react';
