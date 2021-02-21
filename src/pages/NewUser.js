@@ -36,7 +36,7 @@ function NewRequest() {
     let [email, setEmail] = useState("");
     let [password, setPassword] = useState("");
     let [phone, setPhone] = useState("");
-    let [role, setRole] = useState("");
+    let [role, setRole] = useState("Employee");
     let [roleIndex, setRoleIndex] = useState();
 
     useEffect(() => {
@@ -93,6 +93,10 @@ function NewRequest() {
 
     const passwordChange = (event) => {
         setPassword(event.target.value)
+    };
+
+    const roleChange = (event) => {
+        event.target.value === 0 ? setRole("Employee"):setRole("Manager");
     };
 
     const phoneChange = (event) => {
@@ -169,10 +173,7 @@ function NewRequest() {
         <Select
                             value={roleIndex}
                             defaultValue={0}
-                            onChange={(event) => {
-                                event.target.value === 0 ? setRole("Employee"):setRole("Manager");
-                                setRoleIndex(event.target.value); 
-                            }}>
+                            onChange={roleChange}>
                             {roles.map((obj, idx) => (
                               <MenuItem key={`key-${idx}-name${obj}`} value={idx}>
                                 {obj}
