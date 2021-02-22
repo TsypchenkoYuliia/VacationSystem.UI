@@ -127,7 +127,7 @@ function Navbar() {
                 <Button
                     className="my-requests-btn"
                     variant="outlined"
-                    style={{ height: '40px', width: '170px', minWidth: '140px', margin: '15px', border: '2px solid #05445E', color: '#D4F1F4', backgroundColor:'#05445E' }}
+                    style={{ height: '40px', width: '180px', minWidth: '140px', margin: '15px', border: '2px solid #05445E', color: '#D4F1F4', backgroundColor:'#05445E' }}
                     onClick={() => {
                         history.replace('/requests');
                     }}>

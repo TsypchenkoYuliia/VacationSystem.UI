@@ -149,7 +149,7 @@ function RequestView() {
 
   return <div>
     <TextField id="standard-basic" label="" onChange={firstNameChange} value="User editing:"
-      style={{ marginLeft: '55px', height: '40px', wight: '400px' }} />
+      style={{ marginLeft: '55px', height: '40px', wight: '400px', marginTop:'50px' }} />
     <div className='add-request'><div className='card'>
       <TextField id="standard-basic" label="" onChange={firstNameChange} label={user.firstName}
         style={{ margin: '15px', height: '40px', wight: '400px' }} />

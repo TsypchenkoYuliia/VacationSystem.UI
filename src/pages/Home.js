@@ -37,7 +37,12 @@ function Home() {
 
     { localStorage.getItem('role') === "Accountant" ? history.replace('/reviews') : history.replace('/home') }
 
-    return <div className='content'><Navbar></Navbar><div>
+    return <div className='content'>
+
+        <div style={{ marginTop: '30px', marginLeft: '70px', color:'#05445E', fontWeight:'700'}}>Hello, {localStorage.getItem('firstname') + " "} {localStorage.getItem('lastname')}</div>
+
+        <Navbar></Navbar><div>
+
         <TextField id="standard-basic" value='Statistics of consumed days of the current year:' style={{ minWidth: '400px', margin: '20px', marginLeft: '100px' }} />
 
         <div className='chipContainer' style={{ marginLeft: '80px' }}>
