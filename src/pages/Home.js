@@ -38,7 +38,6 @@ function Home() {
     { localStorage.getItem('role') === "Accountant" ? history.replace('/reviews') : history.replace('/home') }
 
     return <div className='content'>
-
         <div style={{ marginTop: '30px', marginLeft: '70px', color:'#05445E', fontWeight:'700'}}>Hello, {localStorage.getItem('firstname') + " "} {localStorage.getItem('lastname')}</div>
 
         <Navbar></Navbar><div>
